@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Projects\\TaskManager\\TaskManagementAPI\\TaskManagementAPI\\TaskManagementAPI.csproj": {}
+    "C:\\Projects\\Task_Manager\\TaskManagementAPI\\TaskManagementAPI.csproj": {}
   },
   "projects": {
-    "C:\\Projects\\TaskManager\\TaskManagementAPI\\TaskManagementAPI\\TaskManagementAPI.csproj": {
+    "C:\\Projects\\Task_Manager\\TaskManagementAPI\\TaskManagementAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Projects\\TaskManager\\TaskManagementAPI\\TaskManagementAPI\\TaskManagementAPI.csproj",
+        "projectUniqueName": "C:\\Projects\\Task_Manager\\TaskManagementAPI\\TaskManagementAPI.csproj",
         "projectName": "TaskManagementAPI",
-        "projectPath": "C:\\Projects\\TaskManager\\TaskManagementAPI\\TaskManagementAPI\\TaskManagementAPI.csproj",
+        "projectPath": "C:\\Projects\\Task_Manager\\TaskManagementAPI\\TaskManagementAPI.csproj",
         "packagesPath": "C:\\Users\\USER\\.nuget\\packages\\",
-        "outputPath": "C:\\Projects\\TaskManager\\TaskManagementAPI\\TaskManagementAPI\\obj\\",
+        "outputPath": "C:\\Projects\\Task_Manager\\TaskManagementAPI\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -51,6 +51,20 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.12, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[8.0.12, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.12, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.6.2, )"

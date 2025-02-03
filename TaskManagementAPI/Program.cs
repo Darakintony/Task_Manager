@@ -12,8 +12,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 var Connection = builder.Configuration.GetConnectionString("Default");
-builder.Services.AddDbContext<TaskMagDbContext>(Options => Options.UseSqlServer(Connection));
+builder.Services.AddDbContext<TaskManagementDbContext>(Options => Options.UseSqlServer(Connection));
 builder.Services.AddScoped<IUsers, UsersService>();
+builder.Services.AddScoped<IProject, ProjectService>();
 
 
          var app = builder.Build();

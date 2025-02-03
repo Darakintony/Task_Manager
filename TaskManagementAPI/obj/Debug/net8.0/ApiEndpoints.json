@@ -1,5 +1,31 @@
 [
   {
+    "ContainingType": "TaskManagementAPI.Controllers.ProjectController",
+    "Method": "CreateProject",
+    "RelativePath": "api/Project/Create Project",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "projectRequest",
+        "Type": "TaskManagementAPI.DTO.ProjectRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TaskManagementAPI.Controllers.ProjectController",
+    "Method": "GetAllProject",
+    "RelativePath": "api/Project/GetAll Project",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "TaskManagementAPI.Controllers.UsersController",
     "Method": "Login",
     "RelativePath": "api/Users/Login",
@@ -25,7 +51,7 @@
     "Parameters": [
       {
         "Name": "registerUser",
-        "Type": "TaskManagementAPI.Model.RegisterUser",
+        "Type": "TaskManagementAPI.DTO.RegisterUser",
         "IsRequired": true
       }
     ],

@@ -6,7 +6,7 @@ namespace TaskManagementAPI.Interface
 {
     public interface IUsers
     {
-        public Task<Response2<int>> CreateUser(RegisterUser registerUser);
+        public Task<Response2<dynamic>> CreateUser(RegisterUser registerUser);
         public Task<dynamic> Login(UserLogin request);
        
 

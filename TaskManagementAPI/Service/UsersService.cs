@@ -9,35 +9,35 @@ namespace TaskManagementAPI.Service
 {
     public class UsersService : IUsers
     {
-        private readonly TaskMagDbContext _Context;
+        private readonly TaskManagementDbContext _Context;
         private ILogger<UsersService> _logger;
-        public UsersService(TaskMagDbContext context, ILogger<UsersService> logger)
+        public UsersService(TaskManagementDbContext context, ILogger<UsersService> logger)
         {
             _Context = context;
             _logger = logger;
         }
 
-        public async Task<Response2<int>> CreateUser(RegisterUser registerUser)
+        public async Task<Response2<dynamic>> CreateUser(RegisterUser registerUser)
         {
-            var User = await _Context.UserTables.FirstOrDefaultAsync(u => u.Email == registerUser.Email);
+            var User = await _Context.UserMagTables.FirstOrDefaultAsync(u => u.Email == registerUser.Email);
             if (User != null)
             {
-                return new Response2<int>
+                return new Response2<dynamic>
                 {
                     StatusCode = "96",
                     StatusMessage = "This User has already exist"
                 };
             }
-            var newUser = new UserTable
+            var newUser = new UserMagTable
             { 
                 FirstName = registerUser.FirstName,
                 LastName = registerUser.LastName,
                 Email = registerUser.Email,
                 Password = registerUser.Password              
             };
-            await _Context.UserTables.AddAsync(newUser);
+            await _Context.UserMagTables.AddAsync(newUser);
             _Context.SaveChanges();
-            return new Response2<int>
+            return new Response2<dynamic>
             {
                 StatusCode = "00",
                 StatusMessage = "Success",
@@ -57,7 +57,7 @@ namespace TaskManagementAPI.Service
                         StatusMessage = "UserNameand and Password required"
                     };
                 }
-                var user = await _Context.UserTables.FirstOrDefaultAsync(s => s.Email == request.Email);
+                var user = await _Context.UserMagTables.FirstOrDefaultAsync(s => s.Email == request.Email);
                 if (user == null)
                 {
                     return new Response

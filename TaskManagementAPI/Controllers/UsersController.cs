@@ -24,10 +24,10 @@ namespace TaskManagementAPI.Controllers
         }
 
         [HttpPost("Login")]
-        public async Task<IActionResult> Login(UserLogin request) 
+        public async Task<IActionResult> Login(UserLogin model) 
         {
-            var user = await _UsersService.Login(request);
-            return Ok(user);
+            var token = await _UsersService.Login(model);
+            return Ok(token);
         }
 
     }

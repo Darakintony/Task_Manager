@@ -146,3 +146,10 @@ C:\Projects\Task_Manager\TaskManagementAPI\obj\Debug\net8.0\refint\TaskManagemen
 C:\Projects\Task_Manager\TaskManagementAPI\obj\Debug\net8.0\TaskManagementAPI.pdb
 C:\Projects\Task_Manager\TaskManagementAPI\obj\Debug\net8.0\TaskManagementAPI.genruntimeconfig.cache
 C:\Projects\Task_Manager\TaskManagementAPI\obj\Debug\net8.0\ref\TaskManagementAPI.dll
+C:\Projects\Task_Manager\TaskManagementAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Projects\Task_Manager\TaskManagementAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Cryptography.Internal.dll
+C:\Projects\Task_Manager\TaskManagementAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+C:\Projects\Task_Manager\TaskManagementAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+C:\Projects\Task_Manager\TaskManagementAPI\bin\Debug\net8.0\Microsoft.Extensions.Identity.Core.dll
+C:\Projects\Task_Manager\TaskManagementAPI\bin\Debug\net8.0\Microsoft.Extensions.Identity.Stores.dll
+C:\Projects\Task_Manager\TaskManagementAPI\bin\Debug\net8.0\BCrypt.Net-Next.dll

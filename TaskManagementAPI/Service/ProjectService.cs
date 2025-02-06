@@ -13,7 +13,7 @@ namespace TaskManagementAPI.Service
         public ProjectService(TaskManagementDbContext Context, ILogger<ProjectService> logger)
         {
             _Context = Context;
-            _logger = logger;
+            _logger = logger; 
         }
 
 
@@ -109,6 +109,11 @@ namespace TaskManagementAPI.Service
 
 
             }
+        }
+
+        public Task<Response2<dynamic>> GetProjectById(Guid id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

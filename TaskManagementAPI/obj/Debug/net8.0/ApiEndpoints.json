@@ -34,7 +34,7 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "request",
+        "Name": "model",
         "Type": "TaskManagementAPI.DTO.UserLogin",
         "IsRequired": true
       }

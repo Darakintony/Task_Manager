@@ -1,5 +1,12 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Azure.Core;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using TaskManagementAPI.Data;
 using TaskManagementAPI.DTO;
 using TaskManagementAPI.Interface;
@@ -11,10 +18,17 @@ namespace TaskManagementAPI.Service
     {
         private readonly TaskManagementDbContext _Context;
         private ILogger<UsersService> _logger;
-        public UsersService(TaskManagementDbContext context, ILogger<UsersService> logger)
+        private readonly IConfiguration _configuration;
+        //private readonly PasswordHasher<IdentityUser> _passwordHasher;
+       // public readonly UserManager<IdentityUser> _userManager;
+        public UsersService(TaskManagementDbContext context, ILogger<UsersService> logger,
+            IConfiguration config)
         {
             _Context = context;
             _logger = logger;
+            _configuration = config;
+           // _passwordHasher = passwordHasher;
+           // _userManager = userManager;
         }
 
         public async Task<Response2<dynamic>> CreateUser(RegisterUser registerUser)
@@ -29,12 +43,15 @@ namespace TaskManagementAPI.Service
                 };
             }
             var newUser = new UserMagTable
-            { 
+            {
                 FirstName = registerUser.FirstName,
                 LastName = registerUser.LastName,
                 Email = registerUser.Email,
-                Password = registerUser.Password              
+                Password = BCrypt.Net.BCrypt.HashPassword(registerUser.Password)
+               // Password = registerUser.Password
             };
+            
+           // User.Password = BCrypt.Net.BCrypt.HashPassword(registerUser.Password);
             await _Context.UserMagTables.AddAsync(newUser);
             _Context.SaveChanges();
             return new Response2<dynamic>
@@ -45,50 +62,77 @@ namespace TaskManagementAPI.Service
             };
         }
 
-        public async Task<dynamic> Login(UserLogin request)
+        public async Task<Response2<dynamic>> Login(UserLogin request)
         {
             try
             {
                 if (string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.Password))
                 {
-                    return new Response
+                    return new Response2<dynamic>
                     {
                         StatusCode = "96",
-                        StatusMessage = "UserNameand and Password required"
+                        StatusMessage = "Username and Password are required"
                     };
                 }
-                var user = await _Context.UserMagTables.FirstOrDefaultAsync(s => s.Email == request.Email);
-                if (user == null)
+
+                var user = await _Context.UserMagTables.FirstOrDefaultAsync(u => u.Email == request.Email);
+                if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.Password))
                 {
-                    return new Response
+                    return new Response2<dynamic>
                     {
                         StatusCode = "96",
                         StatusMessage = "Invalid details"
                     };
                 }
-                if (user.Password != request.Password)
-                {
-                    return new Response
-                    {
-                        StatusCode = "96",
-                        StatusMessage = "Invalid details"
-                    };
-                }
-                return new Response
+
+                // Generate JWT Token
+                var token = GenerateJwtToken(user);
+
+                return new Response2<dynamic>
                 {
                     StatusCode = "00",
-                    StatusMessage = " Login Successful"
+                   // StatusMessage = "Login Successful",
+                    Data = new { Token = token }
                 };
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error during login {ex.Message}");
-                return new Response
+                // Log the exception
+                _logger.LogError(ex, "An error occurred during login");
+                return new Response2<dynamic>
                 {
                     StatusCode = "99",
-                    StatusMessage = "An Error occurrrd while login "
+                    StatusMessage = "An error occurred during login"
                 };
+            }
+        }
+
+        private string GenerateJwtToken(UserMagTable user)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]);
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[]
+                {
+                new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim("UserId", user.Id.ToString())
+                // Add additional claims as needed
+            }),
+                Expires = DateTime.UtcNow.AddMinutes(60),
+                Issuer = _configuration["Jwt:Issuer"],
+                Audience = _configuration["Jwt:Audience"],
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),
+                SecurityAlgorithms.HmacSha256Signature)
             };
+
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
         }
     }
+
+
 }
+
+

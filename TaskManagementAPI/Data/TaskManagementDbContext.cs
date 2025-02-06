@@ -1,11 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using TaskManagementAPI.Model;
 
 namespace TaskManagementAPI.Data
 {
     public class TaskManagementDbContext : DbContext
     {
-        public TaskManagementDbContext(DbContextOptions options) : base(options)
+        public TaskManagementDbContext(DbContextOptions<TaskManagementDbContext> options) : base(options)
         {
         }
 

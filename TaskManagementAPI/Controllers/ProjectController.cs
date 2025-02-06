@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TaskManagementAPI.DTO;
 using TaskManagementAPI.Interface;
@@ -23,6 +24,7 @@ namespace TaskManagementAPI.Controllers
             return Ok(newProject);
         }
 
+       // [Authorize]
         [HttpGet("GetAll Project")]
         public async Task<IActionResult> GetAllProject()
         {

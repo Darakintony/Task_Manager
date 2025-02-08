@@ -9,7 +9,10 @@ namespace TaskManagementAPI.Interface
         public Task<Response2<IEnumerable<ProjectResponse>>> GetAllProject();
         public Task<Response2<ProjectMagTable>> GetProjectById(Guid id);
         Task<Response2<List<ProjectMagTable>>> GetProjectsByUserId(Guid userId);
-        
+        public Task<Response> DeleteProject(Guid id);
+        Task<Response2<dynamic>> UpdateProject(Guid projectId, TaskMagProjectUpdate updateRequest);
+      
+
 
     }
 }

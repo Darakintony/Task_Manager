@@ -5,7 +5,7 @@
     "version": "v1"
   },
   "paths": {
-    "/api/Project/Create Project": {
+    "/api/Project/Create_Project": {
       "post": {
         "tags": [
           "Project"
@@ -36,7 +36,7 @@
         }
       }
     },
-    "/api/Project/GetAll-Project": {
+    "/api/Project/GetAll_Project": {
       "get": {
         "tags": [
           "Project"
@@ -48,7 +48,7 @@
         }
       }
     },
-    "/api/Project/Get-Project-By-Id": {
+    "/api/Project/Get_Project_By_Id": {
       "get": {
         "tags": [
           "Project"
@@ -85,6 +85,70 @@
             }
           }
         ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Project/Delete_Project": {
+      "delete": {
+        "tags": [
+          "Project"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Project/Update_Project{projectId}": {
+      "put": {
+        "tags": [
+          "Project"
+        ],
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TaskMagProjectUpdate"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TaskMagProjectUpdate"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TaskMagProjectUpdate"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "OK"
@@ -230,6 +294,20 @@
             "nullable": true
           },
           "password": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TaskMagProjectUpdate": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
             "type": "string",
             "nullable": true
           }

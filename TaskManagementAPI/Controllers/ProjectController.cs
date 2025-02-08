@@ -17,7 +17,7 @@ namespace TaskManagementAPI.Controllers
         {
             _ProjectService = projectService;
         }
-        [HttpPost("Create Project")]
+        [HttpPost("Create_Project")]
         public async Task<IActionResult> CreateProject(ProjectRequest projectRequest)
         {
             var newProject = await _ProjectService.CreateProject(projectRequest);
@@ -25,7 +25,7 @@ namespace TaskManagementAPI.Controllers
         }
 
         //[Authorize]
-        [HttpGet("GetAll-Project")]
+        [HttpGet("GetAll_Project")]
         public async Task<IActionResult> GetAllProject()
         {
             var allProject = await _ProjectService.GetAllProject();
@@ -34,7 +34,7 @@ namespace TaskManagementAPI.Controllers
 
 
         //[Authorize]
-        [HttpGet("Get-Project-By-Id")]
+        [HttpGet("Get_Project_By_Id")]
         public async Task<IActionResult> GetProjectById(Guid id)
         {
             var project = await _ProjectService.GetProjectById(id);
@@ -47,6 +47,25 @@ namespace TaskManagementAPI.Controllers
 
             var project = await _ProjectService.GetProjectsByUserId(userId);
             return Ok(project);
+        }
+
+        [HttpDelete("Delete_Project")]
+        public async Task<IActionResult> DeleteProject(Guid id)
+        {
+            var project = await _ProjectService.DeleteProject(id);
+            return Ok(project);
+        }
+
+
+        [HttpPut("Update_Project{projectId}")]
+        public async Task<IActionResult> UpdateProject(Guid projectId, [FromBody] TaskMagProjectUpdate updateRequest)
+        {
+            var response = await _ProjectService.UpdateProject(projectId, updateRequest);
+            if (response.StatusCode == "00")
+            {
+                return Ok(response);
+            }
+            return BadRequest(response);
         }
     }
 }

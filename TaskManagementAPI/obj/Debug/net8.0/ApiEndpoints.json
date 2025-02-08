@@ -2,7 +2,7 @@
   {
     "ContainingType": "TaskManagementAPI.Controllers.ProjectController",
     "Method": "CreateProject",
-    "RelativePath": "api/Project/Create Project",
+    "RelativePath": "api/Project/Create_Project",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -11,6 +11,22 @@
         "Name": "projectRequest",
         "Type": "TaskManagementAPI.DTO.ProjectRequest",
         "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TaskManagementAPI.Controllers.ProjectController",
+    "Method": "DeleteProject",
+    "RelativePath": "api/Project/Delete_Project",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
@@ -34,7 +50,7 @@
   {
     "ContainingType": "TaskManagementAPI.Controllers.ProjectController",
     "Method": "GetProjectById",
-    "RelativePath": "api/Project/Get-Project-By-Id",
+    "RelativePath": "api/Project/Get_Project_By_Id",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -50,11 +66,32 @@
   {
     "ContainingType": "TaskManagementAPI.Controllers.ProjectController",
     "Method": "GetAllProject",
-    "RelativePath": "api/Project/GetAll-Project",
+    "RelativePath": "api/Project/GetAll_Project",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TaskManagementAPI.Controllers.ProjectController",
+    "Method": "UpdateProject",
+    "RelativePath": "api/Project/Update_Project{projectId}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "projectId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "updateRequest",
+        "Type": "TaskManagementAPI.DTO.TaskMagProjectUpdate",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": []
   },
   {

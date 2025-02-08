@@ -183,11 +183,62 @@ namespace TaskManagementAPI.Service
             }
         }
 
-       
+        public async Task<Response> DeleteProject(Guid id)
+        {
+            var project = await _Context.ProjectMagTables.FindAsync(id);
+            if (project == null)
+            {
+                return new Response
+                {
+                    StatusCode = "96",
+                    StatusMessage = "Invalid id"
+                };
+            }
+            _Context.ProjectMagTables.Remove(project);
+            _Context.SaveChanges();
+            return new Response
+            {
+                StatusCode = "00",
+                StatusMessage = "You've successful delete your project"
+            };
+        }
 
 
-      
+        public async Task<Response2<dynamic>> UpdateProject(Guid projectId, TaskMagProjectUpdate updateRequest)
+        {
+            try
+            {
+                var project = await _Context.ProjectMagTables.FindAsync(projectId);
+                if (project == null)
+                {
+                    _logger.LogWarning("Project with ID {ProjectId} not found", projectId);
+                    return new Response2<dynamic>
+                    {
+                        StatusCode = "96",
+                        StatusMessage = "Project not found"
+                    };
+                }
+                project.Title = updateRequest.Title ?? project.Title;
+                project.Description = updateRequest.Description ?? project.Description;
 
-      
+                await _Context.SaveChangesAsync();
+
+                return new Response2<dynamic>
+                {
+                    StatusCode = "00",
+                    StatusMessage = "Project updated successfully",
+                    Data = project.Id
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while updating project with ID {ProjectId}", projectId);
+                return new Response2<dynamic>
+                {
+                    StatusCode = "96",
+                    StatusMessage = "An internal error occurred. Please try again later."
+                };
+            }
+        }
     }
 }

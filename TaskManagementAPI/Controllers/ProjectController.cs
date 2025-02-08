@@ -24,7 +24,7 @@ namespace TaskManagementAPI.Controllers
             return Ok(newProject);
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet("GetAll-Project")]
         public async Task<IActionResult> GetAllProject()
         {
@@ -33,11 +33,19 @@ namespace TaskManagementAPI.Controllers
         }
 
 
-        [Authorize]
+        //[Authorize]
         [HttpGet("Get-Project-By-Id")]
-        public async Task<IActionResult>GetProjectById(Guid id)
+        public async Task<IActionResult> GetProjectById(Guid id)
         {
             var project = await _ProjectService.GetProjectById(id);
+            return Ok(project);
+        }
+
+        [HttpGet("Get_All_Project_For_A_User")]
+        public async Task<IActionResult> GetProjectsByUserId(Guid userId)
+        {
+
+            var project = await _ProjectService.GetProjectsByUserId(userId);
             return Ok(project);
         }
     }

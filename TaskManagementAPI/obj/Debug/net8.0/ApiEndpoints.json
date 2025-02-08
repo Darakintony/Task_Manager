@@ -17,6 +17,22 @@
   },
   {
     "ContainingType": "TaskManagementAPI.Controllers.ProjectController",
+    "Method": "GetProjectsByUserId",
+    "RelativePath": "api/Project/Get_All_Project_For_A_User",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Guid",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TaskManagementAPI.Controllers.ProjectController",
     "Method": "GetProjectById",
     "RelativePath": "api/Project/Get-Project-By-Id",
     "HttpMethod": "GET",

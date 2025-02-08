@@ -67,6 +67,77 @@ namespace TaskManagementAPI.Service
             };
         }
 
+        public async Task<Response2<List<ProjectMagTable>>> GetProjectsByUserId(Guid userId)
+        {
+            try
+            {
+                var projects = await _Context.ProjectMagTables
+                                             .Where(p => p.UsersId == userId)
+                                             .ToListAsync();
+
+                if (projects == null || !projects.Any())
+                {
+                    _logger.LogWarning("No projects found for User ID {UserId}", userId);
+                    return new Response2<List<ProjectMagTable>>
+                    {
+                        StatusCode = "96",
+                        StatusMessage = "No projects found for the specified user"
+                    };
+                }
+
+                return new Response2<List<ProjectMagTable>>
+                {
+                    StatusCode = "00",
+                    StatusMessage = "Success",
+                    Data = projects
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while retrieving projects for User ID {UserId}", userId);
+                return new Response2<List<ProjectMagTable>>
+                {
+                    StatusCode = "96",
+                    StatusMessage = "An internal error occurred. Please try again later."
+                };
+            }
+        }
+
+        public async Task<Response2<ProjectMagTable>> GetProjectById(Guid id)
+        {
+            try
+            {
+                var project = await _Context.ProjectMagTables.FindAsync(id);
+
+                if (project == null)
+                {
+                    _logger.LogWarning("Project with ID {ProjectId} not found", id);
+                    return new Response2<ProjectMagTable>
+                    {
+                        StatusCode = "96",
+                        StatusMessage = "Project not found"
+                    };
+                }
+
+                return new Response2<ProjectMagTable>
+                {
+                    StatusCode = "00",
+                    StatusMessage = "Success",
+                    Data = project
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while retrieving project with ID {ProjectId}", id);
+                return new Response2<ProjectMagTable>
+                {
+                    StatusCode = "96",
+                    StatusMessage = "An internal error occurred. Please try again later."
+                };
+            }
+        }
+
+
         public async Task<Response2<IEnumerable<ProjectResponse>>> GetAllProject()
         {
             try
@@ -112,39 +183,11 @@ namespace TaskManagementAPI.Service
             }
         }
 
-        public async Task<Response2<ProjectMagTable>> GetProjectById(Guid id)
-        {
-            try
-            {
-                var project = await _Context.ProjectMagTables.FindAsync(id);
+       
 
-                if (project == null)
-                {
-                    _logger.LogWarning("Project with ID {ProjectId} not found", id);
-                    return new Response2<ProjectMagTable>
-                    {
-                        StatusCode = "96",
-                        StatusMessage = "Project not found"
-                    };
-                }
 
-                return new Response2<ProjectMagTable>
-                {
-                    StatusCode = "00",
-                    StatusMessage = "Success",
-                    Data = project
-                };
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "An error occurred while retrieving project with ID {ProjectId}", id);
-                return new Response2<ProjectMagTable>
-                {
-                    StatusCode = "96",
-                    StatusMessage = "An internal error occurred. Please try again later."
-                };
-            }
-        }
+      
 
+      
     }
 }

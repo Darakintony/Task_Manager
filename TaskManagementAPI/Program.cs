@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using System.Text.Json.Serialization;
 using TaskManagementAPI.Data;
 using TaskManagementAPI.Interface;
 using TaskManagementAPI.Service;
@@ -22,6 +23,13 @@ builder.Services.AddScoped<IUsers, UsersService>();
 builder.Services.AddScoped<IProject, ProjectService>();
 
 
+
+builder.Services.AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    //options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+                    options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+                });
 
 var jwtKey = builder.Configuration["Jwt:Key"];
 if (string.IsNullOrEmpty(jwtKey))

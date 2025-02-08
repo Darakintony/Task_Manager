@@ -36,10 +36,32 @@
         }
       }
     },
-    "/api/Project/GetAll Project": {
+    "/api/Project/GetAll-Project": {
       "get": {
         "tags": [
           "Project"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Project/Get-Project-By-Id": {
+      "get": {
+        "tags": [
+          "Project"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
         ],
         "responses": {
           "200": {

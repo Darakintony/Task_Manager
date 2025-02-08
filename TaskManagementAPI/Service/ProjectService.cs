@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Xml.Linq;
 using TaskManagementAPI.Data;
 using TaskManagementAPI.DTO;
 using TaskManagementAPI.Interface;
@@ -13,7 +14,7 @@ namespace TaskManagementAPI.Service
         public ProjectService(TaskManagementDbContext Context, ILogger<ProjectService> logger)
         {
             _Context = Context;
-            _logger = logger; 
+            _logger = logger;
         }
 
 
@@ -28,7 +29,7 @@ namespace TaskManagementAPI.Service
                 };
             }
 
-            
+
             if (!Guid.TryParse(projectRequest.UserId, out Guid userGuid))
             {
                 return new Response2<dynamic>
@@ -52,11 +53,11 @@ namespace TaskManagementAPI.Service
             {
                 Title = projectRequest.Title,
                 Description = projectRequest.Description,
-                UsersId = userGuid 
+                UsersId = userGuid
             };
 
             await _Context.ProjectMagTables.AddAsync(newproject);
-            await _Context.SaveChangesAsync(); 
+            await _Context.SaveChangesAsync();
 
             return new Response2<dynamic>
             {
@@ -72,19 +73,19 @@ namespace TaskManagementAPI.Service
             {
                 var allProject = await _Context.ProjectMagTables.ToListAsync();
 
-                
-                if (!allProject.Any()) 
+
+                if (!allProject.Any())
                 {
                     _logger.LogInformation("No projects found in the database.");
                     return new Response2<IEnumerable<ProjectResponse>>
                     {
                         StatusCode = "96",
                         StatusMessage = "No record found",
-                        Data = new List<ProjectResponse>() 
+                        Data = new List<ProjectResponse>()
                     };
                 }
 
-               
+
                 var projectResponse = allProject.Select(x => new ProjectResponse(x.Title, x.Description, x.UsersId.ToString()));
 
                 _logger.LogInformation("Successfully retrieved {ProjectCount} projects.", allProject.Count);
@@ -96,7 +97,7 @@ namespace TaskManagementAPI.Service
                     Data = projectResponse
                 };
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 _logger.LogError(ex, "An error occurred while retrieving projects.");
 
@@ -104,16 +105,46 @@ namespace TaskManagementAPI.Service
                 {
                     StatusCode = "99",
                     StatusMessage = "An internal error occurred. Please try again later.",
-                    Data = new List<ProjectResponse>() 
+                    Data = new List<ProjectResponse>()
                 };
 
 
             }
         }
 
-        public Task<Response2<dynamic>> GetProjectById(Guid id)
+        public async Task<Response2<ProjectMagTable>> GetProjectById(Guid id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var project = await _Context.ProjectMagTables.FindAsync(id);
+
+                if (project == null)
+                {
+                    _logger.LogWarning("Project with ID {ProjectId} not found", id);
+                    return new Response2<ProjectMagTable>
+                    {
+                        StatusCode = "96",
+                        StatusMessage = "Project not found"
+                    };
+                }
+
+                return new Response2<ProjectMagTable>
+                {
+                    StatusCode = "00",
+                    StatusMessage = "Success",
+                    Data = project
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while retrieving project with ID {ProjectId}", id);
+                return new Response2<ProjectMagTable>
+                {
+                    StatusCode = "96",
+                    StatusMessage = "An internal error occurred. Please try again later."
+                };
+            }
         }
+
     }
 }

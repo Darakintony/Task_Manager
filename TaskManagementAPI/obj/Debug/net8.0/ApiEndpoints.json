@@ -17,8 +17,24 @@
   },
   {
     "ContainingType": "TaskManagementAPI.Controllers.ProjectController",
+    "Method": "GetProjectById",
+    "RelativePath": "api/Project/Get-Project-By-Id",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TaskManagementAPI.Controllers.ProjectController",
     "Method": "GetAllProject",
-    "RelativePath": "api/Project/GetAll Project",
+    "RelativePath": "api/Project/GetAll-Project",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,

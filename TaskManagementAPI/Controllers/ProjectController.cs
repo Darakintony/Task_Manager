@@ -24,13 +24,21 @@ namespace TaskManagementAPI.Controllers
             return Ok(newProject);
         }
 
-       // [Authorize]
-        [HttpGet("GetAll Project")]
+        [Authorize]
+        [HttpGet("GetAll-Project")]
         public async Task<IActionResult> GetAllProject()
         {
             var allProject = await _ProjectService.GetAllProject();
             return Ok(allProject);
         }
 
+
+        [Authorize]
+        [HttpGet("Get-Project-By-Id")]
+        public async Task<IActionResult>GetProjectById(Guid id)
+        {
+            var project = await _ProjectService.GetProjectById(id);
+            return Ok(project);
+        }
     }
 }

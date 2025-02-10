@@ -19,24 +19,22 @@ namespace TaskManagementAPI.Service
         private readonly TaskManagementDbContext _Context;
         private ILogger<UsersService> _logger;
         private readonly IConfiguration _configuration;
-        //private readonly PasswordHasher<IdentityUser> _passwordHasher;
-       // public readonly UserManager<IdentityUser> _userManager;
+
         public UsersService(TaskManagementDbContext context, ILogger<UsersService> logger,
             IConfiguration config)
         {
             _Context = context;
             _logger = logger;
             _configuration = config;
-           // _passwordHasher = passwordHasher;
-           // _userManager = userManager;
+           
         }
 
-        public async Task<Response2<dynamic>> CreateUser(RegisterUser registerUser)
+        public async Task<Response<dynamic>> CreateUser(RegisterUser registerUser)
         {
             var User = await _Context.UserMagTables.FirstOrDefaultAsync(u => u.Email == registerUser.Email);
             if (User != null)
             {
-                return new Response2<dynamic>
+                return new Response<dynamic>
                 {
                     StatusCode = "96",
                     StatusMessage = "This User has already exist"
@@ -48,13 +46,12 @@ namespace TaskManagementAPI.Service
                 LastName = registerUser.LastName,
                 Email = registerUser.Email,
                 Password = BCrypt.Net.BCrypt.HashPassword(registerUser.Password)
-               // Password = registerUser.Password
+              
             };
             
-           // User.Password = BCrypt.Net.BCrypt.HashPassword(registerUser.Password);
             await _Context.UserMagTables.AddAsync(newUser);
             _Context.SaveChanges();
-            return new Response2<dynamic>
+            return new Response<dynamic>
             {
                 StatusCode = "00",
                 StatusMessage = "Success",
@@ -62,13 +59,13 @@ namespace TaskManagementAPI.Service
             };
         }
 
-        public async Task<Response2<dynamic>> Login(UserLogin request)
+        public async Task<Response<dynamic>> Login(UserLogin request)
         {
             try
             {
                 if (string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.Password))
                 {
-                    return new Response2<dynamic>
+                    return new Response<dynamic>
                     {
                         StatusCode = "96",
                         StatusMessage = "Username and Password are required"
@@ -78,7 +75,7 @@ namespace TaskManagementAPI.Service
                 var user = await _Context.UserMagTables.FirstOrDefaultAsync(u => u.Email == request.Email);
                 if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.Password))
                 {
-                    return new Response2<dynamic>
+                    return new Response<dynamic>
                     {
                         StatusCode = "96",
                         StatusMessage = "Invalid details"
@@ -88,18 +85,16 @@ namespace TaskManagementAPI.Service
                 // Generate JWT Token
                 var token = GenerateJwtToken(user);
 
-                return new Response2<dynamic>
+                return new Response<dynamic>
                 {
                     StatusCode = "00",
-                   // StatusMessage = "Login Successful",
                     Data = new { Token = token }
                 };
             }
             catch (Exception ex)
             {
-                // Log the exception
                 _logger.LogError(ex, "An error occurred during login");
-                return new Response2<dynamic>
+                return new Response<dynamic>
                 {
                     StatusCode = "99",
                     StatusMessage = "An error occurred during login"

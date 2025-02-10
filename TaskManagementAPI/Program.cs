@@ -21,6 +21,7 @@ builder.Services.AddDbContext<TaskManagementDbContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
 builder.Services.AddScoped<IUsers, UsersService>();
 builder.Services.AddScoped<IProject, ProjectService>();
+builder.Services.AddScoped<ITaskMag, TaskMagService>();
 
 
 
@@ -71,18 +72,35 @@ builder.Services.AddSwaggerGen(c =>
         Scheme = "bearer",
         BearerFormat = "JWT",
         In = ParameterLocation.Header,
-        Description = "Enter 'Bearer' [space] and then your token in the text input below.\n\nExample: \"Bearer abcdef12345\"",
+       // Description = "Enter 'Bearer' [space] and then your token in the text input below.\n\nExample: \"Bearer abcdef12345\"",
     };
 
     c.AddSecurityDefinition("Bearer", securityScheme);
 
-    // Define the security requirement
     var securityRequirement = new OpenApiSecurityRequirement
+{
     {
-        { securityScheme, new string[] {} }
-    };
+        new OpenApiSecurityScheme
+        {
+            Reference = new OpenApiReference
+            {
+                Type = ReferenceType.SecurityScheme,
+                Id = "Bearer"  
+            }
+        },
+        new string[] {} 
+    }
+};
 
     c.AddSecurityRequirement(securityRequirement);
+
+    // Define the security requirement
+    //var securityRequirement = new OpenApiSecurityRequirement
+    //{
+    //    { securityScheme, new string[] {} }
+    //};
+
+    //c.AddSecurityRequirement(securityRequirement);
 });
 
 

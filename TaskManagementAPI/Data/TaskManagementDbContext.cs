@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TaskManagementAPI.Model;
 
 namespace TaskManagementAPI.Data
@@ -25,6 +26,19 @@ namespace TaskManagementAPI.Data
 
             modelBuilder.Entity<ProjectMagTable>().HasMany(p => p.TaskMagTables).WithOne(t =>
             t.ProjectMagTable).HasForeignKey(t => t.ProjectId);
+
+            //var taskStatusConverter = new EnumToStringConverter<Status>();
+            modelBuilder
+                .Entity<TaskMagTable>()
+                .Property(e => e.Status)
+                .HasConversion<string>();
+
+            // Configure Priority enum to be stored as string
+            //var priorityConverter = new EnumToStringConverter<Priority>();
+            modelBuilder
+                .Entity<TaskMagTable>()
+                .Property(e => e.Priority)
+                .HasConversion<string>();
         }
     }
 }

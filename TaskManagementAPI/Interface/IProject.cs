@@ -5,12 +5,12 @@ namespace TaskManagementAPI.Interface
 {
     public interface IProject
     {
-        public Task<Response2<dynamic>> CreateProject(ProjectRequest projectRequest);
-        public Task<Response2<IEnumerable<ProjectResponse>>> GetAllProject();
-        public Task<Response2<ProjectMagTable>> GetProjectById(Guid id);
-        Task<Response2<List<ProjectMagTable>>> GetProjectsByUserId(Guid userId);
-        public Task<Response> DeleteProject(Guid id);
-        Task<Response2<dynamic>> UpdateProject(Guid projectId, TaskMagProjectUpdate updateRequest);
+        public Task<Response<dynamic>> CreateProject(ProjectRequest projectRequest);
+        public Task<Response<IEnumerable<ProjectResponse>>> GetAllProject();
+        public Task<dynamic> GetProjectById(Guid id);
+        Task<Response<List<ProjectMagTable>>> GetProjectsByUserId(Guid userId);
+        public Task<Response<bool>> DeleteProject(Guid id);
+        Task<Response<dynamic>> UpdateProject(Guid projectId, ProjectUpdateRequest updateRequest);
       
 
 

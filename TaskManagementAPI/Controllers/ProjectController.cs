@@ -8,6 +8,7 @@ using TaskManagementAPI.Service;
 
 namespace TaskManagementAPI.Controllers
 {
+   [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ProjectController : ControllerBase
@@ -24,7 +25,7 @@ namespace TaskManagementAPI.Controllers
             return Ok(newProject);
         }
 
-        //[Authorize]
+        
         [HttpGet("GetAll_Project")]
         public async Task<IActionResult> GetAllProject()
         {
@@ -33,9 +34,9 @@ namespace TaskManagementAPI.Controllers
         }
 
 
-        //[Authorize]
-        [HttpGet("Get_Project_By_Id")]
-        public async Task<IActionResult> GetProjectById(Guid id)
+        
+        [HttpPost("Get_Project_By_Id")]
+        public async Task<IActionResult> GetProjectById([FromBody]Guid id)
         {
             var project = await _ProjectService.GetProjectById(id);
             return Ok(project);
@@ -58,7 +59,7 @@ namespace TaskManagementAPI.Controllers
 
 
         [HttpPut("Update_Project{projectId}")]
-        public async Task<IActionResult> UpdateProject(Guid projectId, [FromBody] TaskMagProjectUpdate updateRequest)
+        public async Task<IActionResult> UpdateProject(Guid projectId, [FromBody] ProjectUpdateRequest updateRequest)
         {
             var response = await _ProjectService.UpdateProject(projectId, updateRequest);
             if (response.StatusCode == "00")

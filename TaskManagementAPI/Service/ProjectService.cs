@@ -18,11 +18,11 @@ namespace TaskManagementAPI.Service
         }
 
 
-        public async Task<Response2<dynamic>> CreateProject(ProjectRequest projectRequest)
+        public async Task<Response<dynamic>> CreateProject(ProjectRequest projectRequest)
         {
             if (string.IsNullOrWhiteSpace(projectRequest.UserId))
             {
-                return new Response2<dynamic>
+                return new Response<dynamic>
                 {
                     StatusCode = "96",
                     StatusMessage = "User id is required"
@@ -32,7 +32,7 @@ namespace TaskManagementAPI.Service
 
             if (!Guid.TryParse(projectRequest.UserId, out Guid userGuid))
             {
-                return new Response2<dynamic>
+                return new Response<dynamic>
                 {
                     StatusCode = "96",
                     StatusMessage = "Invalid User ID format"
@@ -42,7 +42,7 @@ namespace TaskManagementAPI.Service
             var user = await _Context.UserMagTables.FindAsync(userGuid);
             if (user == null)
             {
-                return new Response2<dynamic>
+                return new Response<dynamic>
                 {
                     StatusCode = "96",
                     StatusMessage = "Invalid User Id"
@@ -59,7 +59,7 @@ namespace TaskManagementAPI.Service
             await _Context.ProjectMagTables.AddAsync(newproject);
             await _Context.SaveChangesAsync();
 
-            return new Response2<dynamic>
+            return new Response<dynamic>
             {
                 StatusCode = "00",
                 StatusMessage = "Project created successfully",
@@ -67,7 +67,7 @@ namespace TaskManagementAPI.Service
             };
         }
 
-        public async Task<Response2<List<ProjectMagTable>>> GetProjectsByUserId(Guid userId)
+        public async Task<Response<List<ProjectMagTable>>> GetProjectsByUserId(Guid userId)
         {
             try
             {
@@ -78,14 +78,14 @@ namespace TaskManagementAPI.Service
                 if (projects == null || !projects.Any())
                 {
                     _logger.LogWarning("No projects found for User ID {UserId}", userId);
-                    return new Response2<List<ProjectMagTable>>
+                    return new Response<List<ProjectMagTable>>
                     {
                         StatusCode = "96",
                         StatusMessage = "No projects found for the specified user"
                     };
                 }
 
-                return new Response2<List<ProjectMagTable>>
+                return new Response<List<ProjectMagTable>>
                 {
                     StatusCode = "00",
                     StatusMessage = "Success",
@@ -95,7 +95,7 @@ namespace TaskManagementAPI.Service
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An error occurred while retrieving projects for User ID {UserId}", userId);
-                return new Response2<List<ProjectMagTable>>
+                return new Response<List<ProjectMagTable>>
                 {
                     StatusCode = "96",
                     StatusMessage = "An internal error occurred. Please try again later."
@@ -103,7 +103,7 @@ namespace TaskManagementAPI.Service
             }
         }
 
-        public async Task<Response2<ProjectMagTable>> GetProjectById(Guid id)
+        public async Task<dynamic> GetProjectById(Guid id)
         {
             try
             {
@@ -112,14 +112,14 @@ namespace TaskManagementAPI.Service
                 if (project == null)
                 {
                     _logger.LogWarning("Project with ID {ProjectId} not found", id);
-                    return new Response2<ProjectMagTable>
+                    return new Response<ProjectMagTable>
                     {
                         StatusCode = "96",
                         StatusMessage = "Project not found"
                     };
                 }
 
-                return new Response2<ProjectMagTable>
+                return new Response<ProjectMagTable>
                 {
                     StatusCode = "00",
                     StatusMessage = "Success",
@@ -129,7 +129,7 @@ namespace TaskManagementAPI.Service
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An error occurred while retrieving project with ID {ProjectId}", id);
-                return new Response2<ProjectMagTable>
+                return new Response<ProjectMagTable>
                 {
                     StatusCode = "96",
                     StatusMessage = "An internal error occurred. Please try again later."
@@ -138,7 +138,7 @@ namespace TaskManagementAPI.Service
         }
 
 
-        public async Task<Response2<IEnumerable<ProjectResponse>>> GetAllProject()
+        public async Task<Response<IEnumerable<ProjectResponse>>> GetAllProject()
         {
             try
             {
@@ -148,7 +148,7 @@ namespace TaskManagementAPI.Service
                 if (!allProject.Any())
                 {
                     _logger.LogInformation("No projects found in the database.");
-                    return new Response2<IEnumerable<ProjectResponse>>
+                    return new Response<IEnumerable<ProjectResponse>>
                     {
                         StatusCode = "96",
                         StatusMessage = "No record found",
@@ -161,7 +161,7 @@ namespace TaskManagementAPI.Service
 
                 _logger.LogInformation("Successfully retrieved {ProjectCount} projects.", allProject.Count);
 
-                return new Response2<IEnumerable<ProjectResponse>>
+                return new Response<IEnumerable<ProjectResponse>>
                 {
                     StatusCode = "00",
                     StatusMessage = "You have successfully retrieved all projects",
@@ -172,7 +172,7 @@ namespace TaskManagementAPI.Service
             {
                 _logger.LogError(ex, "An error occurred while retrieving projects.");
 
-                return new Response2<IEnumerable<ProjectResponse>>
+                return new Response<IEnumerable<ProjectResponse>>
                 {
                     StatusCode = "99",
                     StatusMessage = "An internal error occurred. Please try again later.",
@@ -183,12 +183,12 @@ namespace TaskManagementAPI.Service
             }
         }
 
-        public async Task<Response> DeleteProject(Guid id)
+        public async Task<Response<bool>> DeleteProject(Guid id)
         {
             var project = await _Context.ProjectMagTables.FindAsync(id);
             if (project == null)
             {
-                return new Response
+                return new Response<bool>
                 {
                     StatusCode = "96",
                     StatusMessage = "Invalid id"
@@ -196,15 +196,17 @@ namespace TaskManagementAPI.Service
             }
             _Context.ProjectMagTables.Remove(project);
             _Context.SaveChanges();
-            return new Response
+            return new Response<bool>
             {
                 StatusCode = "00",
-                StatusMessage = "You've successful delete your project"
+                StatusMessage = "You've successful delete your project",
+                Data = true
+                
             };
         }
 
 
-        public async Task<Response2<dynamic>> UpdateProject(Guid projectId, TaskMagProjectUpdate updateRequest)
+        public async Task<Response<dynamic>> UpdateProject(Guid projectId, ProjectUpdateRequest updateRequest)
         {
             try
             {
@@ -212,7 +214,7 @@ namespace TaskManagementAPI.Service
                 if (project == null)
                 {
                     _logger.LogWarning("Project with ID {ProjectId} not found", projectId);
-                    return new Response2<dynamic>
+                    return new Response<dynamic>
                     {
                         StatusCode = "96",
                         StatusMessage = "Project not found"
@@ -223,7 +225,7 @@ namespace TaskManagementAPI.Service
 
                 await _Context.SaveChangesAsync();
 
-                return new Response2<dynamic>
+                return new Response<dynamic>
                 {
                     StatusCode = "00",
                     StatusMessage = "Project updated successfully",
@@ -233,7 +235,7 @@ namespace TaskManagementAPI.Service
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An error occurred while updating project with ID {ProjectId}", projectId);
-                return new Response2<dynamic>
+                return new Response<dynamic>
                 {
                     StatusCode = "96",
                     StatusMessage = "An internal error occurred. Please try again later."

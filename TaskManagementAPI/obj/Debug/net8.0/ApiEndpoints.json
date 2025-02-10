@@ -51,14 +51,14 @@
     "ContainingType": "TaskManagementAPI.Controllers.ProjectController",
     "Method": "GetProjectById",
     "RelativePath": "api/Project/Get_Project_By_Id",
-    "HttpMethod": "GET",
+    "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
         "Name": "id",
         "Type": "System.Guid",
-        "IsRequired": false
+        "IsRequired": true
       }
     ],
     "ReturnTypes": []
@@ -88,7 +88,39 @@
       },
       {
         "Name": "updateRequest",
-        "Type": "TaskManagementAPI.DTO.TaskMagProjectUpdate",
+        "Type": "TaskManagementAPI.DTO.ProjectUpdateRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TaskManagementAPI.Controllers.TaskMagController",
+    "Method": "CreateTask",
+    "RelativePath": "api/TaskMag/Create_Task",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "TaskManagementAPI.DTO.TaskMagRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TaskManagementAPI.Controllers.TaskMagController",
+    "Method": "GetTasksByProjectId",
+    "RelativePath": "api/TaskMag/project/{projectId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "projectId",
+        "Type": "System.Guid",
         "IsRequired": true
       }
     ],

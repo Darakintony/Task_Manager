@@ -1,14 +1,17 @@
-﻿namespace TaskManagementAPI.Model
+﻿using System.Text.Json.Serialization;
+
+namespace TaskManagementAPI.Model
 {
-    public class Response
+    public class Response<T>
     {
         public string StatusCode { get; set; }
         public string StatusMessage { get; set; }
-        //public object Data { get; set; }
-    }
-
-    public class Response2<T> : Response
-    {
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public T Data { get; set; }
     }
+
+    //public class Response2<T> : Response
+    //{
+    //    public T Data { get; set; }
+    //}
 }

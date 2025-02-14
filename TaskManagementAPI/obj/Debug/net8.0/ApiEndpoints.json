@@ -112,6 +112,27 @@
   },
   {
     "ContainingType": "TaskManagementAPI.Controllers.TaskMagController",
+    "Method": "DeleteTask",
+    "RelativePath": "api/TaskMag/Delete_Task",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "projectId",
+        "Type": "System.Guid",
+        "IsRequired": false
+      },
+      {
+        "Name": "taskId",
+        "Type": "System.Guid",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TaskManagementAPI.Controllers.TaskMagController",
     "Method": "GetTasksByProjectId",
     "RelativePath": "api/TaskMag/project/{projectId}",
     "HttpMethod": "GET",

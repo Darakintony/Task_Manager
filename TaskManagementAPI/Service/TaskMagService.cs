@@ -50,6 +50,7 @@ namespace TaskManagementAPI.Service
                 Title = request.Title,
                 Description = request.Description,
                 DueDate = request.DueDate,
+                CreatedAt = DateTime.UtcNow,
                 ProjectId = request.ProjectId,
             };
             _Context.TaskMagTables.Add(newTask);
@@ -130,8 +131,30 @@ namespace TaskManagementAPI.Service
 
         }
 
-       
+        public async Task<Response<dynamic>> DeleteTask(Guid projectId, Guid taskId)
+        {
+            var task = await _Context.TaskMagTables.FirstOrDefaultAsync(t => t.Id == taskId && t.ProjectId == projectId);
+            if (task == null || task.IsDeleted)
+            {
+                return new Response<dynamic>
+                {
+                    StatusCode = "96",
+                    StatusMessage = " Task not found"
+                };
+            }
 
-      
+            task.IsDeleted = true;
+            task.DeletedAt = DateTime.UtcNow;
+            _Context.TaskMagTables.Update(task);
+            await _Context.SaveChangesAsync();
+            return new Response<dynamic>
+            {
+                StatusCode = "00",
+                StatusMessage = "Task deleted successfully"
+            };
+        }
+
+
+
     }
 }

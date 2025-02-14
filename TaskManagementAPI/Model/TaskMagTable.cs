@@ -9,9 +9,12 @@ namespace TaskManagementAPI.Model
             public string Title { get; set; }
             public string? Description { get; set; }
             public DateTime? DueDate { get; set; }
+            public DateTime? DeletedAt { get; set; }
+            public DateTime CreatedAt { get; set; }
+            public bool IsDeleted { get; set; } = false;
+
             public Guid ProjectId { get; set; }
-          
-              [JsonIgnore]
+             [JsonIgnore]
             public ProjectMagTable ProjectMagTable { get; set; }
 
         public Status Status { get; set; } = Status.Pending;

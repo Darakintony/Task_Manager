@@ -44,6 +44,19 @@ namespace TaskManagementAPI.Controllers
             return Ok(response);
         }
 
-       
+
+        [HttpDelete("Delete_Task")]
+        public async Task<IActionResult> DeleteTask(Guid projectId,Guid taskId)
+        {
+            var response = await _TaskMaskService.DeleteTask(projectId,taskId);
+            if (response.StatusCode == "00")
+            {
+                return Ok(response.StatusMessage);
+            }
+            else
+            {
+                return NotFound(response.StatusMessage);
+            }
+        }
     }
 }

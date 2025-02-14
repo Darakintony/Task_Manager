@@ -271,6 +271,36 @@
         }
       }
     },
+    "/api/TaskMag/Delete_Task": {
+      "delete": {
+        "tags": [
+          "TaskMag"
+        ],
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "taskId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Users/Register": {
       "post": {
         "tags": [

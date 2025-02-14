@@ -41,6 +41,10 @@ namespace TaskManagementAPI.Data
                 .HasConversion<string>();
 
             // To exclude soft deleted Task authomatically
+            modelBuilder
+                .Entity<TaskMagTable>()
+                .HasQueryFilter(t => !t.IsDeleted);
+
         }
     }
 }

@@ -10,7 +10,7 @@ namespace TaskManagementAPI.Interface
         public Task<dynamic> GetProjectById(Guid id);
         Task<Response<List<ProjectMagTable>>> GetProjectsByUserId(Guid userId);
         public Task<Response<bool>> DeleteProject(Guid id);
-        Task<Response<dynamic>> UpdateProject(Guid projectId, ProjectUpdateRequest updateRequest);
+        Task<Response<dynamic>> UpdateProject(Guid Id, ProjectUpdateRequest updateRequest);
       
 
 

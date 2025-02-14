@@ -36,5 +36,14 @@ namespace TaskManagementAPI.Controllers
                 return NotFound(response.StatusMessage);
             }
         }
+
+        [HttpPut("Update_Task")]
+        public async Task<IActionResult> UpdateTask(Guid projectId, Guid taskId, TaskMagUpdateRequest updateRequest)
+        {
+            var response = await _TaskMaskService.UpdateTask(projectId, taskId, updateRequest);
+            return Ok(response);
+        }
+
+       
     }
 }

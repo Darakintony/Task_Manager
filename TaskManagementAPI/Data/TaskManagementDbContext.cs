@@ -39,6 +39,8 @@ namespace TaskManagementAPI.Data
                 .Entity<TaskMagTable>()
                 .Property(e => e.Priority)
                 .HasConversion<string>();
+
+            // To exclude soft deleted Task authomatically
         }
     }
 }

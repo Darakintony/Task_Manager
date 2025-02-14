@@ -10,7 +10,8 @@ namespace TaskManagementAPI.Model
             public string? Description { get; set; }
             public DateTime? DueDate { get; set; }
             public Guid ProjectId { get; set; }
-            [JsonIgnore]
+          
+              [JsonIgnore]
             public ProjectMagTable ProjectMagTable { get; set; }
 
         public Status Status { get; set; } = Status.Pending;

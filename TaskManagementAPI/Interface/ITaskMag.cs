@@ -7,5 +7,7 @@ namespace TaskManagementAPI.Interface
     {
        public Task<Response<dynamic>> CreatTask(TaskMagRequest request);
         public  Task<Response<List<TaskMagTable>>> GetTasksByProjectId(Guid projectId);
+        public Task<Response<dynamic>> UpdateTask(Guid projectId, Guid taskId, TaskMagUpdateRequest updateRequest);
+       
     }
 }

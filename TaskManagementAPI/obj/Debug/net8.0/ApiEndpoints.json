@@ -127,6 +127,32 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "TaskManagementAPI.Controllers.TaskMagController",
+    "Method": "UpdateTask",
+    "RelativePath": "api/TaskMag/Update_Task",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "projectId",
+        "Type": "System.Guid",
+        "IsRequired": false
+      },
+      {
+        "Name": "taskId",
+        "Type": "System.Guid",
+        "IsRequired": false
+      },
+      {
+        "Name": "updateRequest",
+        "Type": "TaskManagementAPI.DTO.TaskMagUpdateRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "TaskManagementAPI.Controllers.UsersController",
     "Method": "Login",
     "RelativePath": "api/Users/Login",

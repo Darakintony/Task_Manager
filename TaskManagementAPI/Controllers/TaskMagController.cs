@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TaskManagementAPI.DTO;
 using TaskManagementAPI.Interface;
 
 namespace TaskManagementAPI.Controllers
 {
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class TaskMagController : ControllerBase
@@ -58,5 +60,28 @@ namespace TaskManagementAPI.Controllers
                 return NotFound(response.StatusMessage);
             }
         }
+
+        [HttpPut("{taskId}/restore")]
+        public async Task<IActionResult> RestoreTask(Guid projectId, Guid taskId)
+        {
+            var result = await _TaskMaskService.RestoreTask(projectId, taskId);
+
+            if (result.StatusCode == "00")
+            {
+                return Ok(result);
+            }
+
+            return NotFound(result);
+        }
+
+
+        [HttpPost("Get_Task_By_Id")]
+        public async Task<IActionResult> GetTaskById(Guid taskId)
+        {
+            var task = await _TaskMaskService.GetTaskById(taskId);
+            return Ok(task);
+        }
+        
+
     }
 }

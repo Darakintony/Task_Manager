@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 using TaskManagementAPI.Data;
 using TaskManagementAPI.DTO;
 using TaskManagementAPI.Interface;
@@ -44,12 +45,32 @@ namespace TaskManagementAPI.Service
                     StatusMessage = "Associated project not found"
                 };
             }
+            //DateTime Duedate1;
+            //string[] formats = { "yyyy-MM-dd", "MM/dd/yyyy", "dd-MM-yyyy", "yyyy/MM/dd", "dd/MM/yyyy" };
+            //if (!request.DueDate.HasValue || !DateTime.TryParseExact(request.DueDate.Value.ToString(), formats, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime Duedate))
+            //{
+            //    request.DueDate = Duedate;
 
+            //    return new Response<dynamic>
+            //    {
+            //        StatusCode = "96",
+            //        StatusMessage = "Invalid date format. Use yyyy-MM-dd, MM/dd/yyyy, dd-MM-yyyy, yyyy/MM/dd, or dd/MM/yyyy"
+            //    };
+            //}
+            var datee = ReformedDate(request.DueDate.ToString());
+            if (datee == "96")
+            {
+                return new Response<dynamic>
+                {
+                    StatusCode = "96",
+                    StatusMessage = "Invalid date format. Use dd/MM/yyyy, yyyy/MM/dd, dd-MM-yyyy, MM-dd-yyyy, MM/dd/yyyy, yyyy-MM-dd"
+                };
+            }
             var newTask = new TaskMagTable
             {
                 Title = request.Title,
                 Description = request.Description,
-                DueDate = request.DueDate,
+                DueDate = Convert.ToDateTime(datee), // (DateTime)d,/* request.DueDate.Value.Date,// .toString(17-02-2000)*/
                 CreatedAt = DateTime.UtcNow,
                 ProjectId = request.ProjectId,
             };
@@ -154,7 +175,68 @@ namespace TaskManagementAPI.Service
             };
         }
 
+        public async Task<Response<dynamic>> RestoreTask(Guid projectId, Guid taskId)
+        {
+            _Logger.LogInformation("Restoring task: TaskId={TaskId}, ProjectId={ProjectId}", taskId, projectId);
 
+            var task = await _Context.TaskMagTables
+                .IgnoreQueryFilters()
+                .FirstOrDefaultAsync(t => t.Id == taskId && t.ProjectId == projectId && t.IsDeleted);
+
+            if (task == null)
+            {
+               // _Logger.LogWarning("Task not found or not deleted: TaskId={TaskId}, ProjectId={ProjectId}", taskId, projectId);
+                return new Response<dynamic>
+                {
+                    StatusCode = "96",
+                    StatusMessage = "Task not found or not deleted"
+                };
+            }
+
+            task.IsDeleted = false;
+            task.DeletedAt = null; // Clear the deletion timestamp
+            _Context.TaskMagTables.Update(task);
+            await _Context.SaveChangesAsync();
+
+            _Logger.LogInformation("Task restored successfully: TaskId={TaskId}, ProjectId={ProjectId}", taskId, projectId);
+            return new Response<dynamic>
+            {
+                StatusCode = "00",
+                StatusMessage = "Task restored successfully",
+                Data = task
+            };
+        }
+
+        public async Task<Response<dynamic>> GetTaskById(Guid taskId)
+        {
+            var task = await _Context.TaskMagTables.FindAsync(taskId);
+            if (task == null)
+            {
+                return new Response<dynamic>
+                {
+                    StatusCode = "96",
+                    StatusMessage = "Invalid Id"
+                };
+            }
+            task.IsDeleted = false;
+            task.DeletedAt = null;
+            return new Response<dynamic>
+            {
+                StatusCode = "00",
+                StatusMessage = "Task retrieved successfull",
+                Data = task
+            };
+        }
+
+        private string ReformedDate(string DueDate)
+        {
+            string[] formats = { "yyyy-MM-dd", "MM/dd/yyyy", "MM-dd-yyyy", "dd-MM-yyyy", "yyyy/MM/dd", "dd/MM/yyyy" };
+            if (DateTime.TryParseExact(DueDate, formats, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime parsedDate))
+            {
+                return parsedDate.ToString("yyyy-MM-dd");
+            }
+            return "96";
+        }
 
     }
 }

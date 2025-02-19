@@ -96,6 +96,27 @@
   },
   {
     "ContainingType": "TaskManagementAPI.Controllers.TaskMagController",
+    "Method": "RestoreTask",
+    "RelativePath": "api/TaskMag/{taskId}/restore",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "projectId",
+        "Type": "System.Guid",
+        "IsRequired": false
+      },
+      {
+        "Name": "taskId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TaskManagementAPI.Controllers.TaskMagController",
     "Method": "CreateTask",
     "RelativePath": "api/TaskMag/Create_Task",
     "HttpMethod": "POST",
@@ -123,6 +144,22 @@
         "Type": "System.Guid",
         "IsRequired": false
       },
+      {
+        "Name": "taskId",
+        "Type": "System.Guid",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TaskManagementAPI.Controllers.TaskMagController",
+    "Method": "GetTaskById",
+    "RelativePath": "api/TaskMag/Get_Task_By_Id",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
       {
         "Name": "taskId",
         "Type": "System.Guid",

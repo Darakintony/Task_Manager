@@ -301,6 +301,59 @@
         }
       }
     },
+    "/api/TaskMag/{taskId}/restore": {
+      "put": {
+        "tags": [
+          "TaskMag"
+        ],
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "taskId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/TaskMag/Get_Task_By_Id": {
+      "post": {
+        "tags": [
+          "TaskMag"
+        ],
+        "parameters": [
+          {
+            "name": "taskId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Users/Register": {
       "post": {
         "tags": [
@@ -490,7 +543,6 @@
           },
           "dueDate": {
             "type": "string",
-            "format": "date-time",
             "nullable": true
           },
           "projectId": {

@@ -6,7 +6,7 @@ using TaskManagementAPI.Interface;
 
 namespace TaskManagementAPI.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class TaskMagController : ControllerBase
@@ -39,7 +39,7 @@ namespace TaskManagementAPI.Controllers
             }
         }
 
-        [HttpPut("Update_Task")]
+        [HttpPut("Update_Task/{projectId}/{taskId}")]
         public async Task<IActionResult> UpdateTask(Guid projectId, Guid taskId, TaskMagUpdateRequest updateRequest)
         {
             var response = await _TaskMaskService.UpdateTask(projectId, taskId, updateRequest);

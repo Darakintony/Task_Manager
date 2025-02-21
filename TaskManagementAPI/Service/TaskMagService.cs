@@ -45,18 +45,7 @@ namespace TaskManagementAPI.Service
                     StatusMessage = "Associated project not found"
                 };
             }
-            //DateTime Duedate1;
-            //string[] formats = { "yyyy-MM-dd", "MM/dd/yyyy", "dd-MM-yyyy", "yyyy/MM/dd", "dd/MM/yyyy" };
-            //if (!request.DueDate.HasValue || !DateTime.TryParseExact(request.DueDate.Value.ToString(), formats, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime Duedate))
-            //{
-            //    request.DueDate = Duedate;
-
-            //    return new Response<dynamic>
-            //    {
-            //        StatusCode = "96",
-            //        StatusMessage = "Invalid date format. Use yyyy-MM-dd, MM/dd/yyyy, dd-MM-yyyy, yyyy/MM/dd, or dd/MM/yyyy"
-            //    };
-            //}
+           
             var datee = ReformedDate(request.DueDate.ToString());
             if (datee == "96")
             {

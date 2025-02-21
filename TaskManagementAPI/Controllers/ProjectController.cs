@@ -43,7 +43,7 @@ namespace TaskManagementAPI.Controllers
         }
 
         [HttpGet("Get_All_Project_For_A_User")]
-        public async Task<IActionResult> GetProjectsByUserId(Guid userId)
+        public async Task<IActionResult> GetProjectsByUserId([FromBody]Guid userId)
         {
 
             var project = await _ProjectService.GetProjectsByUserId(userId);

@@ -87,16 +87,28 @@
         "tags": [
           "Project"
         ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
             }
           }
-        ],
+        },
         "responses": {
           "200": {
             "description": "OK"
@@ -222,7 +234,7 @@
         }
       }
     },
-    "/api/TaskMag/Update_Task": {
+    "/api/TaskMag/Update_Task/{projectId}/{taskId}": {
       "put": {
         "tags": [
           "TaskMag"
@@ -230,7 +242,8 @@
         "parameters": [
           {
             "name": "projectId",
-            "in": "query",
+            "in": "path",
+            "required": true,
             "schema": {
               "type": "string",
               "format": "uuid"
@@ -238,7 +251,8 @@
           },
           {
             "name": "taskId",
-            "in": "query",
+            "in": "path",
+            "required": true,
             "schema": {
               "type": "string",
               "format": "uuid"

@@ -22,7 +22,6 @@ options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
 builder.Services.AddScoped<IUsers, UsersService>();
 builder.Services.AddScoped<IProject, ProjectService>();
 builder.Services.AddScoped<ITaskMag, TaskMagService>();
-builder.Services.AddHostedService<TaskCleanupService>();
 
 
 

@@ -42,7 +42,7 @@
       {
         "Name": "userId",
         "Type": "System.Guid",
-        "IsRequired": false
+        "IsRequired": true
       }
     ],
     "ReturnTypes": []
@@ -187,7 +187,7 @@
   {
     "ContainingType": "TaskManagementAPI.Controllers.TaskMagController",
     "Method": "UpdateTask",
-    "RelativePath": "api/TaskMag/Update_Task",
+    "RelativePath": "api/TaskMag/Update_Task/{projectId}/{taskId}",
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
@@ -195,12 +195,12 @@
       {
         "Name": "projectId",
         "Type": "System.Guid",
-        "IsRequired": false
+        "IsRequired": true
       },
       {
         "Name": "taskId",
         "Type": "System.Guid",
-        "IsRequired": false
+        "IsRequired": true
       },
       {
         "Name": "updateRequest",

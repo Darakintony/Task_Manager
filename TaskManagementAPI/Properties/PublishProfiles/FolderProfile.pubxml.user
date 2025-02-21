@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+https://go.microsoft.com/fwlink/?LinkID=208121.
+-->
+<Project>
+  <PropertyGroup>
+    <_PublishTargetUrl>C:\Projects\Task_Manager\TaskManagementAPI\bin\Release\net8.0\publish\TaskManagementAPI</_PublishTargetUrl>
+    <History>True|2025-02-21T10:47:18.7865937Z||;</History>
+    <LastFailureDetails />
+  </PropertyGroup>
+</Project>

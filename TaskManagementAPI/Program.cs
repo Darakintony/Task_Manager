@@ -17,8 +17,29 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+
+var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";
+
+string connectionString;
+
+if (environment == "Development")
+{
+    // Use local MySQL database
+    connectionString = builder.Configuration.GetConnectionString("LocalMySql")??
+        throw new ArgumentNullException("Local MySQL connection string is missing!");
+}
+else
+{
+    // Use MySQL database on Render
+    connectionString = Environment.GetEnvironmentVariable("LiveConnection") ??
+        throw new ArgumentNullException("MySQL connection string is missing!");
+}
 builder.Services.AddDbContext<TaskManagementDbContext>(options =>
-options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+
+Console.WriteLine($"Using {environment} database: {connectionString}");
+
 builder.Services.AddScoped<IUsers, UsersService>();
 builder.Services.AddScoped<IProject, ProjectService>();
 builder.Services.AddScoped<ITaskMag, TaskMagService>();
@@ -33,32 +54,49 @@ builder.Services.AddControllers()
                     options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
                 });
 
-var jwtKey = builder.Configuration["Jwt:Key"];
-if (string.IsNullOrEmpty(jwtKey))
+string jwtKey, jwtIssuer, jwtAudience;
+
+if (environment == "Development")
 {
-    throw new ArgumentNullException("JWT Key is not configured properly.");
+    jwtKey = builder.Configuration["Jwt:Key"] ?? throw new ArgumentNullException("JWT Key is missing in appsettings.json.");
+    jwtIssuer = builder.Configuration["Jwt:Issuer"] ?? "DaraTrained";
+    jwtAudience = builder.Configuration["Jwt:Audience"] ?? "JwtAudience";
+}
+else
+{
+    jwtKey = Environment.GetEnvironmentVariable("JWT_KEY") ?? throw new ArgumentNullException("JWT Key is not configured properly.");
+    jwtIssuer = Environment.GetEnvironmentVariable("JWT_ISSUER") ?? "DaraTrained";
+    jwtAudience = Environment.GetEnvironmentVariable("JWT_AUDIENCE") ?? "JwtAudience";
 }
 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
+
+//var jwtKey = builder.Configuration["Jwt:Key"];
+//if (string.IsNullOrEmpty(jwtKey))
+//{
+ //   throw new ArgumentNullException("JWT Key is not configured properly.");
+//}
+//var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
 
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 })
-.AddJwtBearer(options =>
-{
-options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters //TokenValidationParameters
-{
-    ValidateIssuer = true,
-    ValidateAudience = true,
-    ValidateLifetime = true,
-    ValidateIssuerSigningKey = true,
-    ValidIssuer = builder.Configuration["Jwt:Issuer"],
-    ValidAudience = builder.Configuration["Jwt:Audience"],
-    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
-    ClockSkew = TimeSpan.Zero
-    };
-});
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = jwtIssuer,
+            ValidAudience = jwtAudience,
+            IssuerSigningKey = key,
+            ClockSkew = TimeSpan.Zero
+        };
+    });
+
 builder.Services.AddAuthorization();
 
 builder.Services.AddSwaggerGen(c =>
@@ -92,17 +130,10 @@ builder.Services.AddSwaggerGen(c =>
         new string[] {} 
     }
 };
-
-    c.AddSecurityRequirement(securityRequirement);
-
-    // Define the security requirement
-    //var securityRequirement = new OpenApiSecurityRequirement
-    //{
-    //    { securityScheme, new string[] {} }
-    //};
-
-    //c.AddSecurityRequirement(securityRequirement);
 });
+
+
+
 
 
 var app = builder.Build();
@@ -114,10 +145,17 @@ app.UseAuthentication();
              app.UseSwagger();
              app.UseSwaggerUI();
          }
+        app.UseSwagger();
+        app.UseSwaggerUI();
 
-         app.UseHttpsRedirection();
+ // var port = Environment.GetEnvironmentVariable("PORT") ?? "10000";
+ // app.Urls.Add($"http://0.0.0.0:{port}");
 
-         app.UseAuthorization();
+   //Map some test route
+   //app.MapGet("/", () => "Hello, Render!");
+//   app.UseHttpsRedirection();
+
+app.UseAuthorization();
 
          app.MapControllers();
 

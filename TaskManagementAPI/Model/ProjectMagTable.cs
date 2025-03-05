@@ -1,9 +1,11 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace TaskManagementAPI.Model
 {
     public class ProjectMagTable
     {
+        [Key]
         public Guid Id { get; set; } = Guid.NewGuid();
         public string Title { get; set; }
         public string? Description { get; set; }

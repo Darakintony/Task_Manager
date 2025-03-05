@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+//using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TaskManagementAPI.Model;
 
 namespace TaskManagementAPI.Data
@@ -25,7 +25,8 @@ namespace TaskManagementAPI.Data
             p.UserMagTable).HasForeignKey(p => p.UsersId).HasPrincipalKey(u => u.Id);
 
             modelBuilder.Entity<ProjectMagTable>().HasMany(p => p.TaskMagTables).WithOne(t =>
-            t.ProjectMagTable).HasForeignKey(t => t.ProjectId);
+            t.ProjectMagTable).HasForeignKey(t => t.ProjectId)
+            .OnDelete(DeleteBehavior.Cascade);
 
             //var taskStatusConverter = new EnumToStringConverter<Status>();
             modelBuilder

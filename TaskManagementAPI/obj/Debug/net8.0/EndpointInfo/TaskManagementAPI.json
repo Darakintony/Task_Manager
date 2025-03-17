@@ -630,11 +630,17 @@
       }
     },
     "securitySchemes": {
-      "Bearer": {
+      "JWT": {
         "type": "http",
+        "description": "Enter your token without 'Bearer' prefix.",
         "scheme": "bearer",
         "bearerFormat": "JWT"
       }
     }
-  }
+  },
+  "security": [
+    {
+      "JWT": [ ]
+    }
+  ]
 }

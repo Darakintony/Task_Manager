@@ -101,9 +101,8 @@ builder.Services.AddAuthorization();
 
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "TaskManagementAPI", Version = "v1" });
 
-    // Define the security scheme
     var securityScheme = new OpenApiSecurityScheme
     {
         Name = "Authorization",
@@ -111,57 +110,75 @@ builder.Services.AddSwaggerGen(c =>
         Scheme = "bearer",
         BearerFormat = "JWT",
         In = ParameterLocation.Header,
-       // Description = "Enter 'Bearer' [space] and then your token in the text input below.\n\nExample: \"Bearer abcdef12345\"",
+        Description = "Enter your token without 'Bearer' prefix."
     };
 
-    c.AddSecurityDefinition("Bearer", securityScheme);
+    c.AddSecurityDefinition("JWT", securityScheme); // Renamed to avoid confusion
 
     var securityRequirement = new OpenApiSecurityRequirement
-{
     {
-        new OpenApiSecurityScheme
         {
-            Reference = new OpenApiReference
+            new OpenApiSecurityScheme
             {
-                Type = ReferenceType.SecurityScheme,
-                Id = "Bearer"  
-            }
-        },
-        new string[] {} 
-    }
-};
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "JWT"  // Matches the new definition above
+                }
+            },
+            Array.Empty<string>()
+        }
+    };
+
+    c.AddSecurityRequirement(securityRequirement);
 });
 
 
-
-
-
 var app = builder.Build();
+
+// Enable Authentication before Authorization
 app.UseAuthentication();
 
-         // Configure the HTTP request pipeline.
-         if (app.Environment.IsDevelopment())
-         {
-             app.UseSwagger();
-             app.UseSwaggerUI();
-         }
-        app.UseSwagger();
-        app.UseSwaggerUI();
+// Enable Swagger in Development Mode
+if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "TaskManagementAPI v1");
+        c.RoutePrefix = "swagger";
+    });
+}
 
- // var port = Environment.GetEnvironmentVariable("PORT") ?? "10000";
- // app.Urls.Add($"http://0.0.0.0:{port}");
+//app.UseAuthentication();
 
-   //Map some test route
-   //app.MapGet("/", () => "Hello, Render!");
+//// Configure the HTTP request pipeline.
+//if (app.Environment.IsDevelopment())
+//{
+//    app.UseSwagger();
+//    app.UseSwaggerUI();
+//}
+//app.UseSwagger();
+//app.UseSwaggerUI();
+
+// var port = Environment.GetEnvironmentVariable("PORT") ?? "10000";
+// app.Urls.Add($"http://0.0.0.0:{port}");
+
+//Map some test route
+//app.MapGet("/", () => "Hello, Render!");
 //   app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
-         app.MapControllers();
+app.MapControllers();
 
 app.Run();
-         
 
-         
-     
-     
+
+
+
+
+
+
+
+

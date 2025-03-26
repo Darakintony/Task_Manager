@@ -2,11 +2,15 @@
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using Task_Management.Model;
+using Task_Management.Service;
 using TaskManagementAPI.Data;
 using TaskManagementAPI.DTO;
 using TaskManagementAPI.Interface;
@@ -19,45 +23,124 @@ namespace TaskManagementAPI.Service
         private readonly TaskManagementDbContext _Context;
         private ILogger<UsersService> _logger;
         private readonly IConfiguration _configuration;
+        private readonly IEmailService _emailService;
 
         public UsersService(TaskManagementDbContext context, ILogger<UsersService> logger,
-            IConfiguration config)
+            IConfiguration config, IEmailService emailService)
         {
             _Context = context;
             _logger = logger;
             _configuration = config;
+            _emailService = emailService;
            
         }
-
         public async Task<Response<dynamic>> CreateUser(RegisterUser registerUser)
         {
-            var User = await _Context.UserMagTables.FirstOrDefaultAsync(u => u.Email == registerUser.Email);
-            if (User != null)
+            var existingUser = await _Context.UserMagTables
+                .FirstOrDefaultAsync(u => u.Email == registerUser.Email);
+
+            if (existingUser != null)
             {
                 return new Response<dynamic>
                 {
                     StatusCode = "96",
-                    StatusMessage = "This User has already exist"
+                    StatusMessage = "This User already exists"
                 };
             }
+
+            // ✅ Ensure profile_pictures directory exists
+            var profilePicturesPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/profile_pictures");
+            if (!Directory.Exists(profilePicturesPath))
+            {
+                Directory.CreateDirectory(profilePicturesPath);
+            }
+
+            // ✅ Handle profile picture upload
+            string? profilePictureUrl = null;
+            if (registerUser.ProfilePicture != null)
+            {
+                var allowedExtensions = new[] { ".jpg", ".jpeg", ".png" };
+                var fileExtension = Path.GetExtension(registerUser.ProfilePicture.FileName).ToLower();
+
+                if (!allowedExtensions.Contains(fileExtension))
+                {
+                    return new Response<dynamic> { StatusCode = "96", StatusMessage = "Invalid image format. Allowed formats: .jpg, .jpeg, .png." };
+                }
+
+                var fileName = $"{Guid.NewGuid()}{fileExtension}";
+                var filePath = Path.Combine(profilePicturesPath, fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await registerUser.ProfilePicture.CopyToAsync(stream);
+                }
+
+                string baseUrl = "http://localhost:5260"; // Replace with your actual domain
+                profilePictureUrl = $"{baseUrl}/profile_pictures/{fileName}";
+            }
+
+            // ✅ Create new user
             var newUser = new UserMagTable
             {
+                Id = Guid.NewGuid(),
                 FirstName = registerUser.FirstName,
                 LastName = registerUser.LastName,
                 Email = registerUser.Email,
-                Password = BCrypt.Net.BCrypt.HashPassword(registerUser.Password)
-              
+                Password = BCrypt.Net.BCrypt.HashPassword(registerUser.Password),
+                IsEmailConfirmed = false,
+                ProfilePicture = profilePictureUrl,
+                PhoneNumber = registerUser.PhoneNumber,
+                TokenExpiry = DateTime.UtcNow.AddMinutes(20),
+                EmailConfirmationToken = WebEncoders.Base64UrlEncode(Guid.NewGuid().ToByteArray()) // ✅ URL-safe token
             };
-            
+
             await _Context.UserMagTables.AddAsync(newUser);
-            _Context.SaveChanges();
+            await _Context.SaveChangesAsync();
+
+           
+
+            // ✅ Send confirmation email asynchronously
+            string confirmationLink = $"https://localhost:7040/api/Users/confirm-email?token={newUser.EmailConfirmationToken}&email={registerUser.Email}";
+            string emailBody = $"Click the link to confirm your email: <a href='{confirmationLink}'>Confirm Email</a>";
+
+            _emailService.SendEmail(new Message(new string[] { registerUser.Email }, "Confirm your Email", emailBody));
+
             return new Response<dynamic>
             {
                 StatusCode = "00",
-                StatusMessage = "Success",
-                Data = newUser.Id
+                StatusMessage = "Success! Check your email to confirm your account.",
+                Data = new
+                {
+                    UserId = newUser.Id,
+                    newUser.Email,
+                    ProfilePictureUrl = newUser.ProfilePicture
+                }
             };
         }
+
+
+        public async Task<Response<dynamic>> GetUserProfile(Guid userId)
+        {
+            var user = await _Context.UserMagTables.FindAsync(userId);
+            if (user == null)
+            {
+                return new Response<dynamic> { StatusCode = "96", StatusMessage = "User not found." };
+            }
+
+            return new Response<dynamic>
+            {
+                StatusCode = "00",
+                Data = new
+                {
+                    user.Id,
+                    user.FirstName,
+                    user.LastName,
+                    user.Email,
+                    ProfilePicture = user.ProfilePicture // ✅ Return image URL
+                }
+            };
+        }
+
 
         public async Task<Response<dynamic>> Login(UserLogin request)
         {
@@ -82,6 +165,15 @@ namespace TaskManagementAPI.Service
                     };
                 }
 
+                // 🔹 Ensure email is confirmed before allowing login
+                if (!user.IsEmailConfirmed)
+                {
+                    return new Response<dynamic>
+                    {
+                        StatusCode = "97",
+                        StatusMessage = "Email is not confirmed. Please verify your email."
+                    };
+                }
                 // Generate JWT Token
                 var token = GenerateJwtToken(user);
 

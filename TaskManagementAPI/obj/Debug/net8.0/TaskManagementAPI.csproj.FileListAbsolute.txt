@@ -127,3 +127,11 @@ C:\Projects\Task_Manager\TaskManagementAPI\obj\Debug\net8.0\refint\TaskManagemen
 C:\Projects\Task_Manager\TaskManagementAPI\obj\Debug\net8.0\TaskManagementAPI.pdb
 C:\Projects\Task_Manager\TaskManagementAPI\obj\Debug\net8.0\TaskManagementAPI.genruntimeconfig.cache
 C:\Projects\Task_Manager\TaskManagementAPI\obj\Debug\net8.0\ref\TaskManagementAPI.dll
+C:\Projects\Task_Manager\TaskManagementAPI\bin\Debug\net8.0\BouncyCastle.Cryptography.dll
+C:\Projects\Task_Manager\TaskManagementAPI\bin\Debug\net8.0\MailKit.dll
+C:\Projects\Task_Manager\TaskManagementAPI\bin\Debug\net8.0\MimeKit.dll
+C:\Projects\Task_Manager\TaskManagementAPI\bin\Debug\net8.0\System.Security.Cryptography.Pkcs.dll
+C:\Projects\Task_Manager\TaskManagementAPI\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Security.Cryptography.Pkcs.dll
+C:\Projects\Task_Manager\TaskManagementAPI\bin\Debug\net8.0\Task_Management.dll
+C:\Projects\Task_Manager\TaskManagementAPI\bin\Debug\net8.0\Task_Management.pdb
+C:\Projects\Task_Manager\TaskManagementAPI\bin\Debug\net8.0\TaskManagementAPI.staticwebassets.runtime.json

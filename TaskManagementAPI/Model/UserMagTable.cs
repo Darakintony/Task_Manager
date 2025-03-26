@@ -10,6 +10,11 @@ namespace TaskManagementAPI.Model
         public string LastName { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
+        public string? ProfilePicture { get; set; }
+        public string? PhoneNumber { get; set; }
+        public bool IsEmailConfirmed { get; set; } = false;  // Default false
+        public string EmailConfirmationToken { get; set; }   // Store token
+        public DateTime? TokenExpiry { get; set; } // Expiration Time for Token
         public ICollection<ProjectMagTable> ProjectMagTables { get; set; }
     }
 }

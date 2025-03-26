@@ -1,0 +1,16 @@
+﻿<Project>
+  <ItemGroup>
+    <StaticWebAssetEndpoint Include="_content/TaskManagementAPI/profile_pictures/588fecaf-3baa-4853-a9a2-7b2285536685.3nmj187fny.jpg">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\profile_pictures\588fecaf-3baa-4853-a9a2-7b2285536685.jpg'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"3nmj187fny"},{"Name":"integrity","Value":"sha256-oRXlJdH43daniZcQ0O6dENn7Ab9ozxB/RM2HbH9ePBA="},{"Name":"label","Value":"_content/TaskManagementAPI/profile_pictures/588fecaf-3baa-4853-a9a2-7b2285536685.jpg"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"91134"},{"Name":"Content-Type","Value":"image/jpeg"},{"Name":"ETag","Value":"\u0022oRXlJdH43daniZcQ0O6dENn7Ab9ozxB/RM2HbH9ePBA=\u0022"},{"Name":"Last-Modified","Value":"Tue, 25 Mar 2025 10:00:13 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/TaskManagementAPI/profile_pictures/588fecaf-3baa-4853-a9a2-7b2285536685.jpg">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\profile_pictures\588fecaf-3baa-4853-a9a2-7b2285536685.jpg'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-oRXlJdH43daniZcQ0O6dENn7Ab9ozxB/RM2HbH9ePBA="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=3600, must-revalidate"},{"Name":"Content-Length","Value":"91134"},{"Name":"Content-Type","Value":"image/jpeg"},{"Name":"ETag","Value":"\u0022oRXlJdH43daniZcQ0O6dENn7Ab9ozxB/RM2HbH9ePBA=\u0022"},{"Name":"Last-Modified","Value":"Tue, 25 Mar 2025 10:00:13 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+  </ItemGroup>
+</Project>

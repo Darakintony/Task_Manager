@@ -5,12 +5,12 @@ namespace TaskManagementAPI.Interface
 {
     public interface ITaskMag
     {
-       public Task<Response<dynamic>> CreatTask(TaskMagRequest request);
+       public Task<Response<dynamic>> CreateTask(TaskMagRequest request);
         public  Task<Response<List<TaskMagTable>>> GetTasksByProjectId(Guid projectId);
         public Task<Response<dynamic>> UpdateTask(Guid projectId, Guid taskId, TaskMagUpdateRequest updateRequest);
         public Task<Response<dynamic>> DeleteTask(Guid projectId, Guid taskId);
         public  Task<Response<dynamic>> RestoreTask(Guid projectId, Guid taskId);
         public Task<Response<dynamic>> GetTaskById  (Guid taskId);
-
+        //Task CreatTask(TaskMagRequest request);
     }
 }

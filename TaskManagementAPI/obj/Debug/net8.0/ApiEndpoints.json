@@ -212,6 +212,43 @@
   },
   {
     "ContainingType": "TaskManagementAPI.Controllers.UsersController",
+    "Method": "ConfirmEmail",
+    "RelativePath": "api/Users/confirm-email",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "token",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "email",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TaskManagementAPI.Controllers.UsersController",
+    "Method": "GetUserProfile",
+    "RelativePath": "api/Users/Get/User/Profile",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Guid",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TaskManagementAPI.Controllers.UsersController",
     "Method": "Login",
     "RelativePath": "api/Users/Login",
     "HttpMethod": "POST",
@@ -228,8 +265,8 @@
   },
   {
     "ContainingType": "TaskManagementAPI.Controllers.UsersController",
-    "Method": "CreateUser",
-    "RelativePath": "api/Users/Register",
+    "Method": "RegisterUser",
+    "RelativePath": "api/Users/register",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,

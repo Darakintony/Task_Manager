@@ -9,6 +9,7 @@ namespace TaskManagementAPI.Model
             public string Title { get; set; }
             public string? Description { get; set; }
             public DateTime? DueDate { get; set; }
+            public string Category { get; set; }
             public DateTime? DeletedAt { get; set; }
             public DateTime CreatedAt { get; set; }
             public bool IsDeleted { get; set; } = false;
@@ -32,6 +33,15 @@ namespace TaskManagementAPI.Model
         Low = 1,
         Medium = 2,
         High = 3
+    }
+
+    public enum TaskCategory
+    {
+        Personal = 1,
+        Student = 2,
+        Business = 3,
+        Work = 4,
+
     }
 
 }

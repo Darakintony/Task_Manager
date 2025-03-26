@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "My API",
+    "title": "TaskManagementAPI",
     "version": "v1"
   },
   "paths": {
@@ -368,7 +368,7 @@
         }
       }
     },
-    "/api/Users/Register": {
+    "/api/Users/register": {
       "post": {
         "tags": [
           "Users"
@@ -392,6 +392,56 @@
             }
           }
         },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Users/Get/User/Profile": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Users/confirm-email": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "email",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -531,6 +581,15 @@
           "password": {
             "type": "string",
             "nullable": true
+          },
+          "profilePicture": {
+            "type": "string",
+            "format": "binary",
+            "nullable": true
+          },
+          "phoneNumber": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -540,6 +599,16 @@
           1,
           2,
           3
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "TaskCategory": {
+        "enum": [
+          1,
+          2,
+          3,
+          4
         ],
         "type": "integer",
         "format": "int32"
@@ -562,6 +631,9 @@
           "projectId": {
             "type": "string",
             "format": "uuid"
+          },
+          "category": {
+            "$ref": "#/components/schemas/TaskCategory"
           }
         },
         "additionalProperties": false

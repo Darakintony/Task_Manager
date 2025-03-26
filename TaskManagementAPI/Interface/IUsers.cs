@@ -8,7 +8,8 @@ namespace TaskManagementAPI.Interface
     {
         public Task<Response<dynamic>> CreateUser(RegisterUser registerUser);
         public Task<Response<dynamic>> Login(UserLogin model);
-       
+        public Task<Response<dynamic>> GetUserProfile(Guid userId);
+
 
     }
 }

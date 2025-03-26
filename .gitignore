@@ -1,6 +1,6 @@
 .vs/
-appsettings.json/
-appsettings.Development.json/
+appsettings.json
+appsettings.Development.json
 .env
 secrets.txt
 **/Container

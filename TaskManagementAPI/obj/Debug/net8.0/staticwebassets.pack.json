@@ -1,0 +1,29 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Projects\\Task_Manager\\TaskManagementAPI\\wwwroot\\profile_pictures\\588fecaf-3baa-4853-a9a2-7b2285536685.jpg",
+      "PackagePath": "staticwebassets\\profile_pictures\\588fecaf-3baa-4853-a9a2-7b2285536685.jpg"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.TaskManagementAPI.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.TaskManagementAPI.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.TaskManagementAPI.props",
+      "PackagePath": "build\\TaskManagementAPI.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.TaskManagementAPI.props",
+      "PackagePath": "buildMultiTargeting\\TaskManagementAPI.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.TaskManagementAPI.props",
+      "PackagePath": "buildTransitive\\TaskManagementAPI.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

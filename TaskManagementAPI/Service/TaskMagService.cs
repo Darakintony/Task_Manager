@@ -17,7 +17,7 @@ namespace TaskManagementAPI.Service
             _Logger = Logger;
         }
 
-        public async Task<Response<dynamic>> CreatTask(TaskMagRequest request)
+        public async Task<Response<dynamic>> CreateTask(TaskMagRequest request)
         {
 
             if (request.ProjectId == Guid.Empty)
@@ -61,6 +61,7 @@ namespace TaskManagementAPI.Service
                 Description = request.Description,
                 DueDate = Convert.ToDateTime(datee), // (DateTime)d,/* request.DueDate.Value.Date,// .toString(17-02-2000)*/
                 CreatedAt = DateTime.UtcNow,
+                Category = request.Category.ToString(),
                 ProjectId = request.ProjectId,
             };
             _Context.TaskMagTables.Add(newTask);
@@ -227,5 +228,9 @@ namespace TaskManagementAPI.Service
             return "96";
         }
 
+        //public Task CreatTask(TaskMagRequest request)
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }

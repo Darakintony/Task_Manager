@@ -10,5 +10,6 @@ namespace Task_Management.Service
     public interface IEmailService
     {
         void SendEmail(Message message);
+        
     }
 }

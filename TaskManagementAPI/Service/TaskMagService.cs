@@ -117,6 +117,7 @@ namespace TaskManagementAPI.Service
                 task.DueDate = updateRequest.DueDate ?? task.DueDate;
                 task.Status = updateRequest.Status ?? task.Status;
                 task.Priority = updateRequest.Priority ?? task.Priority;
+                
 
                 _Context.TaskMagTables.Update(task);
                 await _Context.SaveChangesAsync();

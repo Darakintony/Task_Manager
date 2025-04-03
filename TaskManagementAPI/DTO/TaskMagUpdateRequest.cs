@@ -12,6 +12,6 @@ namespace TaskManagementAPI.DTO
        // public Guid ProjectId { get; set; }
         public Status? Status { get; set; } //= Status.Pending;
         public Priority? Priority { get; set; } //= Priority.Medium;
-
+        public string? Category { get; set; }
     }
 }

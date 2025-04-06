@@ -2,11 +2,12 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TaskManagementAPI.DTO;
+using TaskManagementAPI.Enum;
 using TaskManagementAPI.Interface;
 
 namespace TaskManagementAPI.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class TaskMagController : ControllerBase
@@ -101,7 +102,12 @@ namespace TaskManagementAPI.Controllers
             var task = await _TaskMaskService.GetTaskById(taskId);
             return Ok(task);
         }
-        
 
+        [HttpGet("Filter/Task")]
+        public async Task<IActionResult>FilterTask(Guid projectId, Status? status, Priority? priority, Category? category)
+        {
+            var result = await _TaskMaskService.FilterTasks(projectId, status, priority, category);
+            return Ok(result);
+        }
     }
 }

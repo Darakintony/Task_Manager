@@ -200,65 +200,6 @@ namespace TaskManagementAPI.Service
             return new Response<dynamic> { StatusCode = "00", StatusMessage = "Password reset successfully. A confirmation email has been sent." };
         }
 
-
-        //public async Task<Response<dynamic>> ResetPasswordAsync(PasswordResetRequest request)
-        //{
-        //    var user = await _context.UserMagTables.FirstOrDefaultAsync(u => u.Email == request.Email);
-        //    if (user == null)
-        //    {
-        //        return new Response<dynamic> { StatusCode = "96", StatusMessage = "User not found" };
-        //    }
-
-        //    Generate reset token and expiry time
-        //    user.PasswordResetToken = WebEncoders.Base64UrlEncode(Guid.NewGuid().ToByteArray());
-        //    user.PasswordTokenExpiry = DateTime.UtcNow.AddHours(1); // Token valid for 1 hour
-        //    await _context.SaveChangesAsync();
-
-        //    Send Reset Link via Email
-        //    string resetLink = $"https://yourfrontend.com/reset-password?token={user.PasswordResetToken}";
-        //    string subject = "Reset Your Password";
-        //    string message = $"Hello,\n\nClick the link below to reset your password:\n\n{resetLink}\n\nIf you did not request this, please ignore this email.\n\nBest regards,\nYour Security Team";
-
-        //    _emailService.SendEmail(new Message(new string[] { user.Email }, subject, message));
-
-        //    return new Response<dynamic> { StatusCode = "00", StatusMessage = "Password reset link sent to your email." };
-        //}
-
-        //internal async Task<Response<dynamic>> ResetPasswordAsync(PasswordResetRequest updateRequest)
-        //{
-        //    var user = await _context.UserMagTables.FirstOrDefaultAsync(u => u.Email == updateRequest.Email);
-        //    if (user == null)
-        //    {
-        //        return new Response<dynamic> { StatusCode = "96", StatusMessage = "User not found" };
-        //    }
-
-        //    if (string.IsNullOrEmpty(updateRequest.NewPassword) || string.IsNullOrEmpty(updateRequest.ResetPasswordToken))
-        //    {
-        //        return new Response<dynamic> { StatusCode = "96", StatusMessage = "New password and reset token are required" };
-        //    }
-
-        //    if (user.PasswordResetToken != updateRequest.ResetPasswordToken || user.PasswordTokenExpiry < DateTime.UtcNow)
-        //    {
-        //        return new Response<dynamic> { StatusCode = "96", StatusMessage = "Invalid or expired token" };
-        //    }
-
-        //    // Update password
-        //    user.Password = BCrypt.Net.BCrypt.HashPassword(updateRequest.NewPassword);
-
-        //    // Clear token and unlock account
-        //    user.PasswordResetToken = null;
-        //    user.PasswordTokenExpiry = null;
-        //    user.FailedLoginAttempts = 0;
-        //    user.IsAccountLocked = false;
-
-        //    await _context.SaveChangesAsync();
-        //    string subject = "Your password has been changed";
-        //    string message = "Hello,\n\nYour password has been successfully changed. If you didn't make this change, please reset your password immediately or contact support.\n\nBest regards,\nYour Security Team";
-
-        //    _emailService.SendEmail(new Message(new string[] { user.Email }, subject, message));
-        //    return new Response<dynamic> { StatusCode = "00", StatusMessage = "Password reset successfully" };
-        //}
-
         internal async Task<Response<dynamic>> ChangePasswordAsync(Guid userId, ChangePasswordRequest updateRequest)
         {
         

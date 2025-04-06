@@ -1,4 +1,5 @@
-﻿using TaskManagementAPI.Model;
+﻿using TaskManagementAPI.Enum;
+using TaskManagementAPI.Model;
 
 namespace TaskManagementAPI.DTO
 {
@@ -8,7 +9,7 @@ namespace TaskManagementAPI.DTO
         public string? Description { get; set; }
         public string? DueDate { get; set; }
         public Guid ProjectId { get; set; }
-        public TaskCategory Category { get; set; }
+        public Category Category { get; set; }
 
     }
 }

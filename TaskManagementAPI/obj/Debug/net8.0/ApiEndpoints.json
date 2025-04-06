@@ -154,6 +154,37 @@
   },
   {
     "ContainingType": "TaskManagementAPI.Controllers.TaskMagController",
+    "Method": "FilterTask",
+    "RelativePath": "api/TaskMag/Filter/Task",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "projectId",
+        "Type": "System.Guid",
+        "IsRequired": false
+      },
+      {
+        "Name": "status",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "priority",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "category",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TaskManagementAPI.Controllers.TaskMagController",
     "Method": "GetTaskById",
     "RelativePath": "api/TaskMag/Get_Task_By_Id",
     "HttpMethod": "POST",

@@ -217,7 +217,7 @@ namespace TaskManagementAPI.Service
             {
                 user.FailedLoginAttempts++; // Increase failed attempts
 
-                if (user.FailedLoginAttempts >= 4)
+                if (user.FailedLoginAttempts >= 3)
                 {
                     user.IsAccountLocked = true; // Lock account after 4 failed attempts
                 }
@@ -236,59 +236,6 @@ namespace TaskManagementAPI.Service
 
             return new Response<dynamic> { StatusCode = "00", StatusMessage = "Login successful", Data = token };
         }
-
-        //public async Task<Response<dynamic>> Login(UserLogin request)
-        //{
-        //    try
-        //    {
-        //        if (string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.Password))
-        //        {
-        //            return new Response<dynamic>
-        //            {
-        //                StatusCode = "96",
-        //                StatusMessage = "Username and Password are required"
-        //            };
-        //        }
-
-        //        var user = await _Context.UserMagTables.FirstOrDefaultAsync(u => u.Email == request.Email);
-        //        if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.Password))
-        //        {
-        //            return new Response<dynamic>
-        //            {
-        //                StatusCode = "96",
-        //                StatusMessage = "Invalid details"
-        //            };
-        //        }
-
-        //        // 🔹 Ensure email is confirmed before allowing login
-        //        if (!user.IsEmailConfirmed)
-        //        {
-        //            return new Response<dynamic>
-        //            {
-        //                StatusCode = "97",
-        //                StatusMessage = "Email is not confirmed. Please verify your email."
-        //            };
-        //        }
-        //        // Generate JWT Token
-        //        var token = GenerateJwtToken(user);
-
-        //        return new Response<dynamic>
-        //        {
-        //            StatusCode = "00",
-        //            Data = new { Token = token }
-        //        };
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError(ex, "An error occurred during login");
-        //        return new Response<dynamic>
-        //        {
-        //            StatusCode = "99",
-        //            StatusMessage = "An error occurred during login"
-        //        };
-        //    }
-        //}
-
         private string GenerateJwtToken(UserMagTable user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -342,16 +289,6 @@ namespace TaskManagementAPI.Service
                     userExist.ProfilePicture = newProfilePicture;
                 }
             }
-
-            // ✅ Handle password change(User - provided current and new password)
-            //if (!string.IsNullOrEmpty(updateRequest.CurrentPassword) && !string.IsNullOrEmpty(updateRequest.NewPassword))
-            //{
-            //    var passwordResponse = await _userAccountService.ChangePasswordAsync(userId, updateRequest);
-            //    if (passwordResponse.StatusCode != "00")
-            //    {
-            //        return passwordResponse; // Return error if password change fails
-            //    }
-            //}
 
             // ✅ Update other profile details if provided
             userExist.FirstName = updateRequest.FirstName ?? userExist.FirstName;

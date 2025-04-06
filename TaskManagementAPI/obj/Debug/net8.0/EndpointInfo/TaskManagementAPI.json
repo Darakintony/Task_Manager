@@ -368,6 +368,49 @@
         }
       }
     },
+    "/api/TaskMag/Filter/Task": {
+      "get": {
+        "tags": [
+          "TaskMag"
+        ],
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/Status"
+            }
+          },
+          {
+            "name": "priority",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/Priority"
+            }
+          },
+          {
+            "name": "category",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/Category"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Users/register": {
       "post": {
         "tags": [
@@ -739,6 +782,16 @@
   },
   "components": {
     "schemas": {
+      "Category": {
+        "enum": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
       "ChangePasswordRequest": {
         "type": "object",
         "properties": {
@@ -863,16 +916,6 @@
         "type": "integer",
         "format": "int32"
       },
-      "TaskCategory": {
-        "enum": [
-          1,
-          2,
-          3,
-          4
-        ],
-        "type": "integer",
-        "format": "int32"
-      },
       "TaskMagRequest": {
         "type": "object",
         "properties": {
@@ -893,7 +936,7 @@
             "format": "uuid"
           },
           "category": {
-            "$ref": "#/components/schemas/TaskCategory"
+            "$ref": "#/components/schemas/Category"
           }
         },
         "additionalProperties": false

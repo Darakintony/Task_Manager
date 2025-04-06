@@ -1,4 +1,7 @@
 ﻿using System.Text.Json.Serialization;
+using TaskManagementAPI.DTO;
+using TaskManagementAPI.Enum;
+
 
 namespace TaskManagementAPI.Model
 {
@@ -8,10 +11,10 @@ namespace TaskManagementAPI.Model
             public Guid Id { get; set; } = Guid.NewGuid();
             public string Title { get; set; }
             public string? Description { get; set; }
-            public DateTime? DueDate { get; set; }
-            public string Category { get; set; }
+            public DateTime DueDate { get; set; }
+            public Category Category { get; set; }
             public DateTime? DeletedAt { get; set; }
-            public DateTime CreatedAt { get; set; }
+            public DateTime? CreatedAt { get; set; }
             public bool IsDeleted { get; set; } = false;
 
             public Guid ProjectId { get; set; }
@@ -21,28 +24,7 @@ namespace TaskManagementAPI.Model
         public Status Status { get; set; } = Status.Pending;
         public Priority Priority { get; set; } = Priority.Medium;
     }
-    public enum Status
-    {
-        Pending = 1,
-        InProgress = 2,
-        Completed = 3
-    }
-
-    public enum Priority
-    {
-        Low = 1,
-        Medium = 2,
-        High = 3
-    }
-
-    public enum TaskCategory
-    {
-        Personal = 1,
-        Student = 2,
-        Business = 3,
-        Work = 4,
-
-    }
+   
 
 }
 

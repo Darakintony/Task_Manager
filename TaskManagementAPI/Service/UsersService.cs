@@ -89,7 +89,7 @@ namespace TaskManagementAPI.Service
             string confirmationLink = $"https://localhost:7040/api/Users/confirm-email?token={newUser.EmailConfirmationToken}&email={registerUser.Email}";
             string emailBody = $"Click the link to confirm your email: <a href='{confirmationLink}'>Confirm Email</a>";
 
-            _emailService.SendEmail(new Message(new string[] { registerUser.Email }, "Confirm your Email", emailBody));
+            await _emailService.SendEmailAsync(new Message(new string[] { registerUser.Email }, "Confirm your Email", emailBody));
 
             return new Response<dynamic>
             {
@@ -103,68 +103,6 @@ namespace TaskManagementAPI.Service
                 }
             };
         }
-
-        //public async Task<Response<dynamic>> CreateUser(RegisterUser registerUser)
-        //{
-        //    var existingUser = await _Context.UserMagTables
-        //        .FirstOrDefaultAsync(u => u.Email == registerUser.Email);
-
-        //    if (existingUser != null)
-        //    {
-        //        return new Response<dynamic>
-        //        {
-        //            StatusCode = "96",
-        //            StatusMessage = "This User already exists"
-        //        };
-        //    }
-        //    if (!IsValidPassword(registerUser.Password))
-        //    {
-        //        return new Response<dynamic>
-        //        {
-        //            StatusCode = "96",
-        //            StatusMessage = "Password must be at least 8 characters long, include an uppercase letter, a lowercase letter, a number, and a special character."
-        //        };
-        //    }
-
-        //    var profilePictureUrl = await _userAccountService.UploadProfilePictureAsync(registerUser.ProfilePicture);
-        //    //var emailResponse = await _userAccountService.GenerateEmailUpdateTokenAsync(newUser.Id, newUser.Email);
-
-        //    // ✅ Create new user
-        //    var newUser = new UserMagTable
-        //    {
-        //        Id = Guid.NewGuid(),
-        //        FirstName = registerUser.FirstName,
-        //        LastName = registerUser.LastName,
-        //        Email = registerUser.Email,
-        //        Password = BCrypt.Net.BCrypt.HashPassword(registerUser.Password),
-        //        IsEmailConfirmed = false,
-        //        ProfilePicture = profilePictureUrl,
-        //        PhoneNumber = registerUser.PhoneNumber,
-        //        EmailTokenExpiry = DateTime.UtcNow.AddHours(6),
-        //        EmailConfirmationToken = WebEncoders.Base64UrlEncode(Guid.NewGuid().ToByteArray()) // ✅ URL-safe token
-        //    };
-
-        //    await _Context.UserMagTables.AddAsync(newUser);
-        //    await _Context.SaveChangesAsync();
-
-        //    // ✅ Send confirmation email asynchronously
-        //    string confirmationLink = $"https://localhost:7040/api/Users/confirm-email?token={newUser.EmailConfirmationToken}&email={registerUser.Email}";
-        //    string emailBody = $"Click the link to confirm your email: <a href='{confirmationLink}'>Confirm Email</a>";
-
-        //    _emailService.SendEmail(new Message(new string[] { registerUser.Email }, "Confirm your Email", emailBody));
-
-        //    return new Response<dynamic>
-        //    {
-        //        StatusCode = "00",
-        //        StatusMessage = "Success! Check your email to confirm your account.",
-        //        Data = new
-        //        {
-        //            UserId = newUser.Id,
-        //            newUser.Email,
-        //            ProfilePictureUrl = newUser.ProfilePicture
-        //        }
-        //    };
-        //}
 
 
         public async Task<Response<dynamic>> GetUserProfile(Guid userId)

@@ -96,11 +96,12 @@ namespace TaskManagementAPI.Service
                         Description = t.Description,
                         DueDate = (DateTime)t.DueDate,
                         Category = t.Category,
-                        DeletedAt = (DateTime)t.DeletedAt,
-                        CreatedAt = (DateTime)t.CreatedAt,
+                        DeletedAt = t.DeletedAt,
+                        CreatedAt = t.CreatedAt,
                         IsDeleted = t.IsDeleted,
                         Status = t.Status,
                         Priority = t.Priority,
+                        
 
 
 
@@ -267,7 +268,7 @@ namespace TaskManagementAPI.Service
             // Manual mapping
             var result = tasks.Select(t => new TaskMagResponse
             {
-
+                Id = t.Id,
                 Title = t.Title,
                 Description = t.Description,
                 DueDate = (DateTime)t.DueDate,

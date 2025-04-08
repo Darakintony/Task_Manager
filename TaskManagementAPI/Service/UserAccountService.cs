@@ -83,11 +83,11 @@ namespace TaskManagementAPI.Service
 
             // ✅ Send confirmation email to the **NEW** email
             string confirmationLink = $"https://localhost:7040/api/Users/confirm-email?token={user.EmailConfirmationToken}";
-             _emailService.SendEmail(new Message(new string[] { newEmail }, "Confirm Your Email", confirmationLink));
+            await _emailService.SendEmailAsync(new Message(new string[] { newEmail }, "Confirm Your Email", confirmationLink));
 
             // ✅ Send notification to the **OLD** email (security measure)
             string securityAlert = "Your email update request was initiated. If this wasn't you, please contact support.";
-             _emailService.SendEmail(new Message(new string[] { user.Email }, "Security Alert: Email Update", securityAlert));
+            await _emailService.SendEmailAsync(new Message(new string[] { user.Email }, "Security Alert: Email Update", securityAlert));
 
             return new Response<string> { StatusCode = "00", StatusMessage = "Confirmation email sent to new email. Security alert sent to current email." };
         }
@@ -149,7 +149,7 @@ namespace TaskManagementAPI.Service
             // Send email with reset token
             //string resetLink = $"https://localhost:7040/api/Users/confirm-email?token={user.PasswordResetToken}";
             string resetLink = $"https://localhost:7040/api/users/reset-password?token={user.PasswordResetToken}";
-            _emailService.SendEmail(new Message(new string[] { email }, "Reset Your Password", resetLink));
+            await _emailService.SendEmailAsync(new Message(new string[] { email }, "Reset Your Password", resetLink));
 
             return new Response<dynamic> { StatusCode = "00", StatusMessage = "Password reset email sent successfully" };
         }
@@ -195,7 +195,7 @@ namespace TaskManagementAPI.Service
             string subject = "Your Password Has Been Reset";
             string message = "Hello,\n\nYour password has been successfully changed. If you didn't make this change, please reset your password immediately or contact support.\n\nBest regards,\nYour Security Team";
 
-            _emailService.SendEmail(new Message(new string[] { user.Email }, subject, message));
+            await _emailService.SendEmailAsync(new Message(new string[] { user.Email }, subject, message));
 
             return new Response<dynamic> { StatusCode = "00", StatusMessage = "Password reset successfully. A confirmation email has been sent." };
         }
@@ -234,7 +234,7 @@ namespace TaskManagementAPI.Service
             string subject = "Your password has been changed";
             string message = "Hello,\n\nYour password has been successfully changed. If you didn't make this change, please reset your password immediately or contact support.\n\nBest regards,\nYour Security Team";
 
-            _emailService.SendEmail(new Message(new string[] { user.Email }, subject, message));
+            await _emailService.SendEmailAsync(new Message(new string[] { user.Email }, subject, message));
             return new Response<dynamic> { StatusCode = "00", StatusMessage = "Password changed successfully" };
         }
 

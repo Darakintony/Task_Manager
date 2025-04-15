@@ -1,0 +1,13 @@
+C:\Projects\Task_Manager\Task_Management\bin\Debug\net8.0\Task_Management.deps.json
+C:\Projects\Task_Manager\Task_Management\bin\Debug\net8.0\Task_Management.dll
+C:\Projects\Task_Manager\Task_Management\bin\Debug\net8.0\Task_Management.pdb
+C:\Projects\Task_Manager\Task_Management\obj\Debug\net8.0\Task_Management.csproj.AssemblyReference.cache
+C:\Projects\Task_Manager\Task_Management\obj\Debug\net8.0\Task_Management.GeneratedMSBuildEditorConfig.editorconfig
+C:\Projects\Task_Manager\Task_Management\obj\Debug\net8.0\Task_Management.AssemblyInfoInputs.cache
+C:\Projects\Task_Manager\Task_Management\obj\Debug\net8.0\Task_Management.AssemblyInfo.cs
+C:\Projects\Task_Manager\Task_Management\obj\Debug\net8.0\Task_Management.csproj.CoreCompileInputs.cache
+C:\Projects\Task_Manager\Task_Management\obj\Debug\net8.0\Task_Management.sourcelink.json
+C:\Projects\Task_Manager\Task_Management\obj\Debug\net8.0\Task_Management.dll
+C:\Projects\Task_Manager\Task_Management\obj\Debug\net8.0\refint\Task_Management.dll
+C:\Projects\Task_Manager\Task_Management\obj\Debug\net8.0\Task_Management.pdb
+C:\Projects\Task_Manager\Task_Management\obj\Debug\net8.0\ref\Task_Management.dll

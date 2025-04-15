@@ -1,10 +1,13 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 using System.Text.Json.Serialization;
+using Task_Management.Model;
+using Task_Management.Service;
 using TaskManagementAPI.Data;
 using TaskManagementAPI.Interface;
 using TaskManagementAPI.Service;
@@ -13,6 +16,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+var Configuration = builder.Configuration;
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -40,9 +44,21 @@ builder.Services.AddDbContext<TaskManagementDbContext>(options =>
 
 Console.WriteLine($"Using {environment} database: {connectionString}");
 
+// Add Email Configuration from appsettings.json
+var emailConfig = builder.Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>();
+builder.Services.AddSingleton(emailConfig);
+
+// Register EmailService as an interface
+builder.Services.AddScoped<IEmailService, EmailService>();
+
+// Register UsersService (and make sure it depends on `IEmailService`, not `EmailService` directly)
+//builder.Services.AddScoped<IUsers, UsersService>();
+
 builder.Services.AddScoped<IUsers, UsersService>();
 builder.Services.AddScoped<IProject, ProjectService>();
 builder.Services.AddScoped<ITaskMag, TaskMagService>();
+builder.Services.AddScoped<UserAccountService, UserAccountService>();
+
 
 
 
@@ -98,6 +114,14 @@ builder.Services.AddAuthentication(options =>
     });
 
 builder.Services.AddAuthorization();
+// Add Email Configs
+
+//var emailConfig = Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>()
+//    ?? throw new InvalidOperationException("Email configuration is missing from appsettings.json.");
+//builder.Services.AddSingleton(emailConfig);
+//builder.Services.AddScoped<IEmailService, EmailService>();
+
+
 
 builder.Services.AddSwaggerGen(c =>
 {

@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
 using System.Globalization;
 using TaskManagementAPI.Data;
 using TaskManagementAPI.DTO;
+using TaskManagementAPI.Enum;
 using TaskManagementAPI.Interface;
 using TaskManagementAPI.Model;
 
@@ -17,7 +19,7 @@ namespace TaskManagementAPI.Service
             _Logger = Logger;
         }
 
-        public async Task<Response<dynamic>> CreatTask(TaskMagRequest request)
+        public async Task<Response<dynamic>> CreateTask(TaskMagRequest request)
         {
 
             if (request.ProjectId == Guid.Empty)
@@ -45,7 +47,7 @@ namespace TaskManagementAPI.Service
                     StatusMessage = "Associated project not found"
                 };
             }
-           
+
             var datee = ReformedDate(request.DueDate.ToString());
             if (datee == "96")
             {
@@ -61,6 +63,7 @@ namespace TaskManagementAPI.Service
                 Description = request.Description,
                 DueDate = Convert.ToDateTime(datee), // (DateTime)d,/* request.DueDate.Value.Date,// .toString(17-02-2000)*/
                 CreatedAt = DateTime.UtcNow,
+                Category = request.Category,
                 ProjectId = request.ProjectId,
             };
             _Context.TaskMagTables.Add(newTask);
@@ -75,29 +78,46 @@ namespace TaskManagementAPI.Service
 
         }
 
-        public async Task<Response<List<TaskMagTable>>> GetTasksByProjectId(Guid projectId)
+        public async Task<Response<List<TaskMagResponse>>> GetTasksByProjectId(Guid projectId)
         {
             var tasks = await _Context.TaskMagTables.Where(tasks =>
             tasks.ProjectId == projectId).ToListAsync();
 
             if (tasks.Any())
             {
-                return new Response<List<TaskMagTable>>
+                return new Response<List<TaskMagResponse>>
                 {
                     StatusCode = "00",
                     StatusMessage = "success",
-                    Data = tasks
+                    Data = tasks.Select(t => new TaskMagResponse
+                    {
+                        Id = t.Id,
+                        Title = t.Title,
+                        Description = t.Description,
+                        DueDate = (DateTime)t.DueDate,
+                        Category = t.Category,
+                        DeletedAt = t.DeletedAt,
+                        CreatedAt = t.CreatedAt,
+                        IsDeleted = t.IsDeleted,
+                        Status = t.Status,
+                        Priority = t.Priority,
+                        
+
+
+
+                    }).ToList()
                 };
             }
-            return new Response<List<TaskMagTable>>
+            return new Response<List<TaskMagResponse>>
             {
                 StatusCode = "96",
-                StatusMessage = "No task found for the specify project"
+                StatusMessage = "No task found for the specify project",
+                Data = null 
             };
-                
+
         }
 
-        public async Task<Response<dynamic>> UpdateTask(Guid projectId,Guid taskId, TaskMagUpdateRequest updateRequest)
+        public async Task<Response<dynamic>> UpdateTask(Guid projectId, Guid taskId, TaskMagUpdateRequest updateRequest)
         {
             try
             {
@@ -128,16 +148,16 @@ namespace TaskManagementAPI.Service
                     Data = task
                 };
             }
-            catch (Exception ex) 
-            { 
-             _Logger.LogError("An error occur while updating task with Id {taskId} in project {projectId}", taskId, projectId);
+            catch (Exception ex)
+            {
+                _Logger.LogError("An error occur while updating task with Id {taskId} in project {projectId}", taskId, projectId);
                 return new Response<dynamic>
                 {
                     StatusCode = "96",
                     StatusMessage = "An error occur while updating the task"
                 };
             };
-           
+
 
         }
 
@@ -174,7 +194,7 @@ namespace TaskManagementAPI.Service
 
             if (task == null)
             {
-               // _Logger.LogWarning("Task not found or not deleted: TaskId={TaskId}, ProjectId={ProjectId}", taskId, projectId);
+                // _Logger.LogWarning("Task not found or not deleted: TaskId={TaskId}, ProjectId={ProjectId}", taskId, projectId);
                 return new Response<dynamic>
                 {
                     StatusCode = "96",
@@ -227,5 +247,45 @@ namespace TaskManagementAPI.Service
             return "96";
         }
 
+        public async Task<Response<List<TaskMagResponse>>> FilterTasks(Guid projectId, Status? status, Priority? priority, Category? category)
+        {
+            var query = _Context.TaskMagTables.AsQueryable();
+
+            query = query.Where(t => t.ProjectId == projectId && !t.IsDeleted);
+
+            if (status.HasValue)
+                query = query.Where(t => t.Status == status.Value);
+
+            if (priority.HasValue)
+                query = query.Where(t => t.Priority == priority.Value);
+
+            if (category.HasValue)
+                query = query.Where(t => t.Category == category.Value);
+          
+            var tasks = await query.ToListAsync();
+            // var result = _mapper.Map<List<TaskMagResponse>>(tasks);
+
+            // Manual mapping
+            var result = tasks.Select(t => new TaskMagResponse
+            {
+                Id = t.Id,
+                Title = t.Title,
+                Description = t.Description,
+                DueDate = (DateTime)t.DueDate,
+                Status = t.Status,
+                Priority = t.Priority,
+                Category = t.Category
+                //ProjectId = t.ProjectId
+            }).ToList();
+
+            return new Response<List<TaskMagResponse>>
+            {
+                StatusCode = "00",
+                StatusMessage = "Filtered tasks retrieved successfully",
+                Data = result
+            };
+        }
+
     }
+    
 }

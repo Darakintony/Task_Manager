@@ -51,6 +51,10 @@ namespace TaskManagementAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
@@ -98,9 +102,25 @@ namespace TaskManagementAPI.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<string>("EmailConfirmationToken")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime?>("EmailTokenExpiry")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("FailedLoginAttempts")
+                        .HasColumnType("int");
+
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("longtext");
+
+                    b.Property<bool>("IsAccountLocked")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("IsEmailConfirmed")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -108,6 +128,21 @@ namespace TaskManagementAPI.Migrations
 
                     b.Property<string>("Password")
                         .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("PasswordResetToken")
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime?>("PasswordTokenExpiry")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("PendingEmail")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("ProfilePicture")
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");

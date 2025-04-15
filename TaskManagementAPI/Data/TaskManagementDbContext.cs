@@ -41,6 +41,12 @@ namespace TaskManagementAPI.Data
                 .Property(e => e.Priority)
                 .HasConversion<string>();
 
+            // Convert Category to store as string
+            modelBuilder
+                .Entity<TaskMagTable>()
+                .Property(e => e.Category)
+                .HasConversion<string>();
+
             // To exclude soft deleted Task authomatically
             modelBuilder
                 .Entity<TaskMagTable>()

@@ -2,11 +2,12 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TaskManagementAPI.DTO;
+using TaskManagementAPI.Enum;
 using TaskManagementAPI.Interface;
 
 namespace TaskManagementAPI.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class TaskMagController : ControllerBase
@@ -17,10 +18,30 @@ namespace TaskManagementAPI.Controllers
             _TaskMaskService = TaskMaskService;
         }
 
+        //[HttpPost("projects/{projectId}/tasks")]
+        //public async Task<IActionResult> CreateTask(Guid projectId, [FromBody] TaskMagRequest request)
+        //{
+        //    if (request == null)
+        //    {
+        //        return BadRequest(new { Status = "Error", Message = "Invalid request data" });
+        //    }
+
+        //    var task = await _TaskMaskService.CreateTask(projectId, request);
+
+        //    if (task == null)
+        //    {
+        //        return StatusCode(StatusCodes.Status500InternalServerError,
+        //            new { Status = "Error", Message = "Failed to create task" });
+        //    }
+
+        //    return CreatedAtAction(nameof(CreateTask), new { projectId, taskId = task.Id }, task);
+        //}
+
+
         [HttpPost("Create_Task")]
-        public async Task<IActionResult> CreateTask (TaskMagRequest request)
+        public async Task<IActionResult> CreateTask(TaskMagRequest request)
         {
-            var task = await _TaskMaskService.CreatTask(request);
+            var task = await _TaskMaskService.CreateTask( request);
             return Ok(task);
         }
 
@@ -81,7 +102,12 @@ namespace TaskManagementAPI.Controllers
             var task = await _TaskMaskService.GetTaskById(taskId);
             return Ok(task);
         }
-        
 
+        [HttpGet("Filter/Task")]
+        public async Task<IActionResult>FilterTask(Guid projectId, Status? status, Priority? priority, Category? category)
+        {
+            var result = await _TaskMaskService.FilterTasks(projectId, status, priority, category);
+            return Ok(result);
+        }
     }
 }
